@@ -25,6 +25,16 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Editorial type (loaded via <link> in layout.tsx) ─── */
+.font-display {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+  font-optical-sizing: auto;
+}
+
+.font-mono-data {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
@@ -43,6 +53,30 @@ html, body {
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+/* ─── Expansion map: flowing trade routes & pulsing home port ─── */
+@keyframes dash-flow {
+  to { stroke-dashoffset: -8; }
+}
+.map-route-flow {
+  animation: dash-flow 1.6s linear infinite;
+}
+
+.map-port-label {
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+@keyframes port-ping {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  80% { transform: scale(2.4); opacity: 0; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.map-port-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: port-ping 2.4s ease-out infinite;
 }
 
 /* ─── TrustGraph Anomaly Animations ─── */

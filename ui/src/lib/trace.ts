@@ -35,9 +35,10 @@ const index = traceIndex as unknown as {
 };
 
 export async function fetchProductLot(lotCode: string): Promise<ProductLot | null> {
-  const lot = index.lots[lotCode];
-  if (!lot) return null;
-  return lot;
+  const wanted = lotCode.trim().toLowerCase();
+  const key = Object.keys(index.lots).find((k) => k.toLowerCase() === wanted);
+  if (!key) return null;
+  return index.lots[key];
 }
 
 // ───────── Explorer URL ─────────

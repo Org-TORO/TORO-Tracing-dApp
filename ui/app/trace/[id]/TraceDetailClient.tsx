@@ -9,21 +9,27 @@ import type { ProductLot, TraceStage } from "@/src/lib/trace";
 function getDetail(traces: TraceStage[], stage: number, key: string): string {
   const t = traces.find((x) => x.stage === stage);
   const v = t?.details?.[key];
-  return typeof v === "string" || typeof v === "number" ? String(v) : "—";
+  return typeof v === "string" || typeof v === "number" ? String(v) : "…";
 }
 
 function fmtDate(ts: number): string {
-  if (!ts) return "—";
+  if (!ts) return "…";
   const d = new Date(ts * 1000);
   return d.toLocaleDateString("vi-VN");
 }
 
 const STAGE_META = [
   { num: 1, title: "NGUỒN GỐC", en: "SUPPLIER", color: "bg-blue-600", icon: "fa-ship" },
+  { num: 2, title: "KIỂM NHẬN", en: "INVENTORY", color: "bg-cyan-600", icon: "fa-boxes-stacked" },
   { num: 3, title: "CHẾ BIẾN", en: "MANUFACTURING", color: "bg-green-600", icon: "fa-industry" },
   { num: 4, title: "LƯU KHO", en: "WAREHOUSE", color: "bg-orange-500", icon: "fa-warehouse" },
   { num: 5, title: "VẬN CHUYỂN", en: "SHIPPING", color: "bg-purple-600", icon: "fa-truck-fast" },
 ];
+
+const shortSig = (s: string, a = 6, b = 6) =>
+  s.length > a + b + 1 ? `${s.slice(0, a)}…${s.slice(-b)}` : s;
+const shortKey = (s: string) => shortSig(s, 6, 6);
+const withUnit = (v: string, unit: string) => (v === "…" ? v : v + unit);
 
 export default function TraceDetailClient() {
   const params = useParams();
@@ -32,9 +38,11 @@ export default function TraceDetailClient() {
   const [product, setProduct] = useState<ProductLot | null>(null);
   const [loading, setLoading] = useState(true);
   const [qrUrl, setQrUrl] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [activeBatchIdx, setActiveBatchIdx] = useState(0);
 
   useEffect(() => {
-    document.title = `TORO Trace — ${id}`;
+    document.title = `TORO Trace · ${id}`;
     loadProduct();
     if (typeof window !== "undefined") {
       QRCode.toDataURL(window.location.href, { width: 164, margin: 2, color: { dark: "#0f2a5f", light: "#ffffff" } })
@@ -55,6 +63,21 @@ export default function TraceDetailClient() {
     }
   }
 
+  useEffect(() => {
+    setActiveBatchIdx(0);
+    setCopied(false);
+  }, [id]);
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard unavailable
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0a1628] flex items-center justify-center">
@@ -72,9 +95,18 @@ export default function TraceDetailClient() {
     );
   }
 
-  const batch = product.batches[0];
+  const batch = product.batches[Math.min(activeBatchIdx, product.batches.length - 1)];
   const batchTrace = batch?.trace || [];
   const lotTrace = product.lotTraces || [];
+
+  const custody = [
+    { label: "Đánh bắt · Source", trace: batchTrace.find((t) => t.stage === 1) },
+    { label: "Kiểm nhận · Inventory", trace: batchTrace.find((t) => t.stage === 2) },
+    { label: "Chế biến · Manufacturing", trace: batchTrace.find((t) => t.stage === 3) },
+    { label: "Lưu kho · Warehouse", trace: lotTrace.find((t) => t.stage === 4) },
+    { label: "Vận chuyển · Distribution", trace: lotTrace.find((t) => t.stage === 5) },
+  ];
+  const recorder = custody.map((c) => c.trace?.recorder).find(Boolean);
 
   const kpi = [
     { icon: "fa-regular fa-calendar", title: "Ngày xuất bến", value: fmtDate(product.packagingDate) },
@@ -140,6 +172,13 @@ export default function TraceDetailClient() {
                     <img src={qrUrl} alt="QR" className="w-full h-full" />
                   </div>
                 )}
+                <button
+                  onClick={copyLink}
+                  className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  <i className={`fa-regular ${copied ? "fa-circle-check" : "fa-copy"}`} />
+                  {copied ? "Đã sao chép liên kết" : "Sao chép liên kết"}
+                </button>
               </div>
               <div className="w-36 h-28 rounded-[22px] overflow-hidden shadow-lg border-4 border-white flex-shrink-0 bg-white flex items-center justify-center">
                 <img src="/tuna_on_can.png" alt="Tuna" className="w-full h-full object-contain" />
@@ -163,10 +202,28 @@ export default function TraceDetailClient() {
           {/* Section Title */}
           <div className="mb-6">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0f2a5f]">HÀNH TRÌNH TRUY XUẤT</h2>
+            {/* Batch selector */}
             {product.batches.length > 1 && (
-              <p className="text-slate-500 text-sm mt-1">
-                {product.batches.length} lô nguyên liệu: {product.batches.map((b) => b.batchId).join(", ")}
-              </p>
+              <div className="mt-3">
+                <div className="flex flex-wrap gap-2">
+                  {product.batches.map((b, i) => (
+                    <button
+                      key={b.batchId}
+                      onClick={() => setActiveBatchIdx(i)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors ${
+                        i === activeBatchIdx
+                          ? "bg-[#0f2a5f] text-white shadow-sm"
+                          : "bg-white text-[#0f2a5f] border border-slate-200 hover:border-[#0f2a5f]/40"
+                      }`}
+                    >
+                      {b.batchId}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-slate-400 text-[11px] mt-2">
+                  Chạm để xem từng lô nguyên liệu ({product.batches.length} lô)
+                </p>
+              </div>
             )}
           </div>
 
@@ -176,8 +233,8 @@ export default function TraceDetailClient() {
 
             {STAGE_META.map((stage, idx) => {
               const trace =
-                stage.num === 1
-                  ? batchTrace.find((t) => t.stage === 1)
+                stage.num <= 3
+                  ? batchTrace.find((t) => t.stage === stage.num)
                   : lotTrace.find((t) => t.stage === stage.num);
 
               return (
@@ -199,16 +256,22 @@ export default function TraceDetailClient() {
                           <Detail label="Ngày đánh bắt" value={getDetail(batchTrace, 1, "Catch Date")} />
                           <Detail label="Phương pháp" value={getDetail(batchTrace, 1, "Fishing Method")} />
                           <Detail label="Vùng biển" value={getDetail(batchTrace, 1, "Catch Area")} />
-                          <Detail label="Khối lượng" value={getDetail(batchTrace, 1, "Catch Weight (kg)") + " kg"} />
+                          <Detail label="Khối lượng" value={withUnit(getDetail(batchTrace, 1, "Catch Weight (kg)"), " kg")} />
+                        </>
+                      )}
+                      {stage.num === 2 && (
+                        <>
+                          <Detail label="Ngày nhận" value={getDetail(batchTrace, 2, "Inventory Received")} />
+                          <Detail label="Nơi lưu" value={getDetail(batchTrace, 2, "Inventory Location")} />
                         </>
                       )}
                       {stage.num === 3 && (
                         <>
                           <Detail label="Nhà máy" value={getDetail(batchTrace, 3, "Factory Name")} />
-                          <Detail label="Mã lô" value={batch?.batchId || "—"} />
+                          <Detail label="Mã lô" value={batch?.batchId || "…"} />
                           <Detail label="Ngày SX" value={getDetail(batchTrace, 3, "Production Date")} />
                           <Detail label="Ngày đóng gói" value={getDetail(lotTrace, 3, "Packaging Date")} />
-                          <Detail label="Đầu vào" value={getDetail(batchTrace, 3, "Input Weight (kg)") + " kg"} />
+                          <Detail label="Đầu vào" value={withUnit(getDetail(batchTrace, 3, "Input Weight (kg)"), " kg")} />
                           <Detail label="Số lon" value={getDetail(batchTrace, 3, "Output Cans")} />
                         </>
                       )}
@@ -217,7 +280,7 @@ export default function TraceDetailClient() {
                           <Detail label="Kho lạnh" value={getDetail(lotTrace, 4, "Warehouse Name")} />
                           <Detail label="Ngày nhập kho" value={getDetail(lotTrace, 4, "Storage Start")} />
                           <Detail label="Ngày xuất kho" value={getDetail(lotTrace, 4, "Storage End")} />
-                          <Detail label="Nhiệt độ" value={(() => { const t = getDetail(lotTrace, 4, "Storage Temp (°C)"); return t !== "—" ? t + "°C" : t; })()} />
+                          <Detail label="Nhiệt độ" value={withUnit(getDetail(lotTrace, 4, "Storage Temp (°C)"), "°C")} />
                         </>
                       )}
                       {stage.num === 5 && (
@@ -260,36 +323,48 @@ export default function TraceDetailClient() {
               );
             })}
 
-            {/* Distribution */}
-            <div className="relative mb-6">
-              <div className="absolute left-[-50px] sm:left-[-58px] top-4 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-teal-700 flex items-center justify-center text-white text-lg border-4 border-[#e9eef5] shadow-md z-10">
-                <i className="fa-solid fa-store" />
-              </div>
-              <div className="bg-white rounded-3xl p-6 shadow-sm">
-                <h3 className="text-base sm:text-lg font-extrabold text-[#0f2a5f] mb-5">
-                  5. PHÂN PHỐI <span className="text-slate-500">(DISTRIBUTOR)</span>
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  <Detail label="Nhà phân phối" value="Tokyo Distributor" />
-                  <Detail label="Tình trạng" value="Đã nhận hàng" />
-                  <Detail label="Ngày nhận hàng" value={(() => { const t = lotTrace.find((x) => x.stage === 5); const d = t?.details?.["Arrival Date"]; return typeof d === "string" || typeof d === "number" ? String(d) : "—"; })()} />
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Blockchain */}
-          <div className="bg-white rounded-3xl p-5 flex items-center justify-between shadow-sm">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-900 to-blue-600 flex items-center justify-center text-white text-xl flex-shrink-0">
-              <i className="fa-solid fa-shield-halved" />
-            </div>
-            <div className="flex-1 ml-4">
-              <h4 className="text-[#0f2a5f] text-base font-bold mb-1">XÁC THỰC BLOCKCHAIN</h4>
-              <p className="text-slate-500 text-xs leading-relaxed">Dữ liệu được ghi nhận trên blockchain và xác minh toàn chuỗi cung ứng</p>
-            </div>
-            <div className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-xs font-bold flex-shrink-0 ml-3">
-              ✓ Verified
-            </div>
+          {/* Chain of custody */}
+          <div className="bg-[#0a1628] rounded-3xl p-6 shadow-sm">
+              <div className="mb-1">
+                <p className="text-[10px] tracking-[2px] font-bold text-white/40">CHUỖI VẬT CHỨNG</p>
+              </div>
+              <p className="font-display italic text-xl text-white mb-5">Chain of custody</p>
+              <div className="border-t border-white/10">
+                {custody.map((c) =>
+                  c.trace?.txHash ? (
+                    <a
+                      key={c.label}
+                      href={explorerUrl(c.trace.txHash)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center justify-between gap-3 py-3 border-b border-white/[0.07]"
+                    >
+                      <span className="text-xs text-white/55 group-hover:text-white/85 transition-colors">
+                        {c.label}
+                      </span>
+                      <span className="font-mono-data text-[11px] text-ocean inline-flex items-center gap-1.5">
+                        {shortSig(c.trace.txHash)}
+                        <i className="fa-solid fa-arrow-up-right-from-square text-[9px]" />
+                      </span>
+                    </a>
+                  ) : (
+                    <div
+                      key={c.label}
+                      className="flex items-center justify-between gap-3 py-3 border-b border-white/[0.07]"
+                    >
+                      <span className="text-xs text-white/55">{c.label}</span>
+                      <span className="text-[11px] text-white/25">Chưa ghi nhận</span>
+                    </div>
+                  )
+                )}
+              </div>
+              <div className="mt-5 font-mono-data text-[10px] text-white/30 space-y-1.5">
+                <p>người ghi · {recorder ? shortKey(recorder) : "…"}</p>
+                <p>chương trình · {shortKey("2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc")}</p>
+                <p>mạng · solana devnet</p>
+              </div>
           </div>
         </div>
       </div>
@@ -299,6 +374,17 @@ export default function TraceDetailClient() {
 }
 
 function Detail({ label, value }: { label: string; value: string }) {
+  if (value === "…") {
+    return (
+      <div>
+        <p className="text-slate-500 text-xs mb-1 font-semibold">{label}</p>
+        <p className="text-slate-400 text-xs leading-relaxed font-medium">
+          <i className="fa-regular fa-clock mr-1" />
+          Chưa ghi nhận
+        </p>
+      </div>
+    );
+  }
   return (
     <div>
       <p className="text-slate-500 text-xs mb-1 font-semibold">{label}</p>

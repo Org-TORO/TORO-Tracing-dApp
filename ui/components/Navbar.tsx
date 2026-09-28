@@ -50,6 +50,16 @@ export default function Navbar() {
           >
             Home
           </Link>
+          <Link
+            href="/trace"
+            className={`transition-colors no-underline font-medium ${
+              pathname === "/trace"
+                ? "text-white"
+                : "text-white/50 hover:text-white"
+            }`}
+          >
+            Explorer
+          </Link>
           <a
             href="/#docs"
             className="transition-colors no-underline font-medium text-white/50 hover:text-white"
