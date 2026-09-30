@@ -64,7 +64,7 @@ html, body {
 }
 
 .map-port-label {
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s ease;
   pointer-events: none;
 }
 
@@ -104,4 +104,21 @@ html, body {
 
 @keyframes dash-anim {
   to { stroke-dashoffset: -12; }
+}
+
+/* ─── Reduced motion: freeze ambient loops, keep content static ─── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll,
+  .map-route-flow,
+  .map-port-ping,
+  .anomaly-node,
+  .anomaly-link,
+  .animate-ping,
+  .animate-pulse,
+  .animate-spin {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

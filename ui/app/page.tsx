@@ -2,12 +2,31 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Fish, Anchor, Link2, Snowflake, Truck, Boxes, ShieldCheck } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { ArrowDown, ArrowUpRight, Anchor, Snowflake, Boxes, Trophy } from "lucide-react";
 import QRCode from "qrcode";
-import Can3D from "@/components/Can3D";
-import ExpansionMap from "@/components/ExpansionMap";
+import dynamic from "next/dynamic";
+import LazySection from "@/components/LazySection";
+
+/* Heavy visuals split into their own chunks: three.js (hero can) loads
+   async without blocking hero copy; the expansion map (d3 + topo data)
+   loads only when scrolled near, via LazySection. */
+const Can3D = dynamic(() => import("@/components/Can3D"), {
+  ssr: false,
+  loading: () => (
+    <div
+      aria-hidden
+      className="w-full h-full rounded-full bg-ocean/5 blur-2xl animate-pulse"
+    />
+  ),
+});
+const ExpansionMap = dynamic(() => import("@/components/ExpansionMap"), {
+  loading: () => (
+    <div aria-hidden className="w-full h-64 bg-white/[0.02] rounded-2xl animate-pulse" />
+  ),
+});
 import StampButton from "@/components/StampButton";
+import { useT } from "@/src/lib/i18n";
 import traceIndex from "@/src/data/traceIndex.json";
 import { explorerUrl } from "@/src/lib/trace";
 
@@ -19,7 +38,7 @@ import { explorerUrl } from "@/src/lib/trace";
    ════════════════════════════════════════════════════════════════════ */
 
 const STORY_LOT_CODE = "TORO-01";
-const TRACE_URL = "https://toro-dapp.vercel.app/trace/TORO-01";
+const TRACE_URL = "https://toro-dapp.vercel.app/explorer/TORO-01";
 const PROGRAM_URL =
   "https://solscan.io/account/2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc?cluster=devnet";
 
@@ -119,16 +138,18 @@ function Signature({ trace, label }: { trace: any; label: string }) {
 
 /* ═══ CHAPTER 0 · THE CAN ═══ */
 
-function Hero({ onTraceClick }: { onTraceClick: () => void }) {
+function Hero() {
+  const { t } = useT();
   const ref = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const canY = useTransform(scrollYProgress, [0, 1], [0, -120]);
-  const canOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.15]);
-  const textY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const canY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : -120]);
+  const canOpacity = useTransform(scrollYProgress, [0, 0.8], [1, reduceMotion ? 1 : 0.15]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 60]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, reduceMotion ? 1 : 0]);
 
   return (
     <section
@@ -147,27 +168,17 @@ function Hero({ onTraceClick }: { onTraceClick: () => void }) {
         {/* Story */}
         <motion.div style={{ y: textY, opacity: textOpacity }} className="flex-1 lg:max-w-2xl">
           <p className="font-mono-data text-xs tracking-[0.35em] uppercase text-ocean mb-6">
-            Solana Devnet · Lot {STORY_LOT_CODE}
+            {t.landing.hero.kicker(STORY_LOT_CODE)}
           </p>
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl xl:text-[5.2rem] font-light text-white leading-[1.02] mb-8">
-            Every can
+            {t.landing.hero.line1}
             <br />
-            <em className="italic text-ocean">remembers</em> the
-            <br />
-            ocean.
+            <em className="italic text-ocean">{t.landing.hero.em}</em>{" "}
+            {t.landing.hero.line2}
           </h1>
           <p className="text-lg text-white/55 max-w-md leading-relaxed mb-4">
-            This one was caught off {d(source, "Region")}, and every step since
-            the catch has been signed into the Solana blockchain. Nothing was
-            typed in afterwards. Nothing can be.
+            {t.landing.hero.body(d(source, "Region").toString())}
           </p>
-          <button
-            onClick={onTraceClick}
-            className="group inline-flex items-center gap-2 text-sm font-mono-data text-white/60 hover:text-white transition-colors mt-2"
-          >
-            Read its story
-            <span className="w-8 h-px bg-current group-hover:w-12 transition-all" />
-          </button>
         </motion.div>
 
         {/* The can */}
@@ -186,7 +197,7 @@ function Hero({ onTraceClick }: { onTraceClick: () => void }) {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
       >
         <span className="font-mono-data text-[11px] tracking-[0.3em] uppercase text-white/35">
-          Scroll to trace it
+          {t.landing.hero.scrollCue}
         </span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
@@ -202,6 +213,7 @@ function Hero({ onTraceClick }: { onTraceClick: () => void }) {
 /* ═══ CHAPTER 1 · THE CATCH ═══ */
 
 function TheCatch() {
+  const { t } = useT();
   return (
     <section className="relative px-6 md:px-10 py-28 md:py-40 overflow-hidden bg-gradient-to-b from-[#0a1628] via-[#081226] to-[#0a1628]">
       {/* Light rays from the surface */}
@@ -232,12 +244,12 @@ function TheCatch() {
       <div className="relative z-10 max-w-6xl mx-auto">
         <ChapterHeading
           num="01"
-          kicker="The Catch · Bình Định, Vietnam"
+          kicker={t.landing.catchChapter.kicker(d(source, "Region").toString())}
           title={
             <>
-              Caught the old way.
+              {t.landing.catchChapter.titleA}
               <br />
-              <em className="italic text-ocean">Recorded the new way.</em>
+              <em className="italic text-ocean">{t.landing.catchChapter.titleB}</em>
             </>
           }
         />
@@ -251,21 +263,21 @@ function TheCatch() {
             className="lg:col-span-2"
           >
             <p className="text-white/55 text-lg leading-relaxed mb-8">
-              A {d(source, "Fish Species").toString().toLowerCase()} tuna,{" "}
-              {d(source, "Catch Weight (kg)")} kg of it, hooked by longline in
-              the {d(source, "Catch Area")}. The moment it left the water, a
-              fisher signed the catch into a blockchain, before the ice, before
-              the dock, before anyone could add a forgotten detail.
+              {t.landing.catchChapter.body(
+                d(source, "Fish Species").toString().toLowerCase(),
+                d(source, "Catch Weight (kg)").toString(),
+                d(source, "Catch Area").toString()
+              )}
             </p>
             <p className="font-display text-3xl md:text-4xl font-light text-white italic leading-snug">
-              “{d(source, "Catch Weight (kg)")} kg, {d(source, "Catch Date")}.{" "}
+              “{t.landing.catchChapter.quote(d(source, "Catch Weight (kg)").toString(), d(source, "Catch Date").toString())}{" "}
               <span className="text-gold not-italic font-mono-data text-2xl align-middle">
                 {d(source, "HACCP Certified")}
               </span>
               ”
             </p>
             <div className="mt-8">
-              <Signature trace={source} label="Catch record · Solana" />
+              <Signature trace={source} label={t.landing.catchChapter.sigLabel} />
             </div>
           </motion.div>
 
@@ -279,18 +291,18 @@ function TheCatch() {
             <div className="flex items-center gap-3 mb-4">
               <Anchor className="w-4 h-4 text-ocean" />
               <span className="font-mono-data text-xs tracking-[0.25em] uppercase text-white/40">
-                Catch manifest · {batch?.batchId ?? STORY_LOT_CODE}
+                {t.landing.catchChapter.manifest(batch?.batchId ?? STORY_LOT_CODE)}
               </span>
             </div>
             <div className="border-t border-white/10">
-              <SpecRow label="Species" value={d(source, "Fish Species")} />
-              <SpecRow label="Fishing method" value={d(source, "Fishing Method")} />
-              <SpecRow label="Region" value={d(source, "Region")} />
-              <SpecRow label="Catch area" value={d(source, "Catch Area")} />
-              <SpecRow label="Catch date" value={d(source, "Catch Date")} />
-              <SpecRow label="Catch weight" value={<>{d(source, "Catch Weight (kg)")} kg</>} />
-              <SpecRow label="Source type" value={d(source, "Source Type")} />
-              <SpecRow label="Food safety" value={d(source, "HACCP Certified")} mono />
+              <SpecRow label={t.landing.catchChapter.spec.species} value={d(source, "Fish Species")} />
+              <SpecRow label={t.landing.catchChapter.spec.method} value={d(source, "Fishing Method")} />
+              <SpecRow label={t.landing.catchChapter.spec.region} value={d(source, "Region")} />
+              <SpecRow label={t.landing.catchChapter.spec.area} value={d(source, "Catch Area")} />
+              <SpecRow label={t.landing.catchChapter.spec.date} value={d(source, "Catch Date")} />
+              <SpecRow label={t.landing.catchChapter.spec.weight} value={<>{d(source, "Catch Weight (kg)")} kg</>} />
+              <SpecRow label={t.landing.catchChapter.spec.sourceType} value={d(source, "Source Type")} />
+              <SpecRow label={t.landing.catchChapter.spec.foodSafety} value={d(source, "HACCP Certified")} mono />
             </div>
           </motion.div>
         </div>
@@ -302,6 +314,7 @@ function TheCatch() {
 /* ═══ CHAPTER 2 · THE FACTORY ═══ */
 
 function TheFactory() {
+  const { t } = useT();
   return (
     <section className="relative px-6 md:px-10 py-28 md:py-40 bg-[#0a1628] overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
@@ -311,12 +324,12 @@ function TheFactory() {
       <div className="relative z-10 max-w-6xl mx-auto">
         <ChapterHeading
           num="02"
-          kicker="The Factory · Quy Nhơn"
+          kicker={t.landing.factoryChapter.kicker}
           title={
             <>
-              {d(manufacturing, "Input Weight (kg)")} kg of fish in.
+              {t.landing.factoryChapter.titleA(d(manufacturing, "Input Weight (kg)").toString())}
               <br />
-              <em className="italic text-gold">{lot?.totalCans?.toLocaleString("en-US")} cans out.</em>
+              <em className="italic text-gold">{t.landing.factoryChapter.titleB(lot?.totalCans?.toLocaleString("en-US") ?? "")}</em>
             </>
           }
         />
@@ -332,25 +345,22 @@ function TheFactory() {
             <div className="flex items-center gap-3 mb-4">
               <Boxes className="w-4 h-4 text-gold" />
               <span className="font-mono-data text-xs tracking-[0.25em] uppercase text-white/40">
-                Production record
+                {t.landing.factoryChapter.record}
               </span>
             </div>
             <div className="border-t border-white/10">
-              <SpecRow label="Factory" value={d(manufacturing, "Factory Name")} />
-              <SpecRow label="Cold storage received" value={d(inventory, "Inventory Received")} />
-              <SpecRow label="Stored at" value={d(inventory, "Inventory Location")} />
-              <SpecRow label="Production date" value={d(manufacturing, "Production Date")} />
-              <SpecRow label="Packaging date" value={d(manufacturing, "Packaging Date")} />
-              <SpecRow label="Wastage" value={<>{d(manufacturing, "Wastage (kg)")} kg</>} />
+              <SpecRow label={t.landing.factoryChapter.spec.factory} value={d(manufacturing, "Factory Name")} />
+              <SpecRow label={t.landing.factoryChapter.spec.received} value={d(inventory, "Inventory Received")} />
+              <SpecRow label={t.landing.factoryChapter.spec.storedAt} value={d(inventory, "Inventory Location")} />
+              <SpecRow label={t.landing.factoryChapter.spec.productionDate} value={d(manufacturing, "Production Date")} />
+              <SpecRow label={t.landing.factoryChapter.spec.packagingDate} value={d(manufacturing, "Packaging Date")} />
+              <SpecRow label={t.landing.factoryChapter.spec.wastage} value={<>{d(manufacturing, "Wastage (kg)")} kg</>} />
             </div>
             <p className="text-white/45 text-sm leading-relaxed mt-8">
-              On the factory floor nobody touches a blockchain. Workers scan the
-              batch QR at each station; the app signs and submits the record
-              behind the scenes. Roles live on-chain, so a packing station
-              physically cannot sign a receiving step.
+              {t.landing.factoryChapter.body}
             </p>
             <div className="mt-4">
-              <Signature trace={manufacturing} label="Production record · Solana" />
+              <Signature trace={manufacturing} label={t.landing.factoryChapter.sigLabel} />
             </div>
           </motion.div>
 
@@ -375,7 +385,7 @@ function TheFactory() {
                 </div>
               </div>
               <p className="font-mono-data text-[11px] tracking-[0.2em] uppercase text-white/30 text-center mt-4">
-                The field app, on the floor
+                {t.landing.factoryChapter.videoCaption}
               </p>
             </div>
           </motion.div>
@@ -388,12 +398,13 @@ function TheFactory() {
 /* ═══ CHAPTER 3 · THE PROOF ═══ */
 
 function TheProof() {
+  const { t } = useT();
   const signatures = [
-    { trace: source, label: "Catch signed" },
-    { trace: inventory, label: "Cold storage signed" },
-    { trace: manufacturing, label: "Production signed" },
-    { trace: warehouse, label: "Warehouse signed" },
-    { trace: distribution, label: "Shipment signed" },
+    { trace: source, label: t.landing.proofChapter.sigLabels.catch },
+    { trace: inventory, label: t.landing.proofChapter.sigLabels.cold },
+    { trace: manufacturing, label: t.landing.proofChapter.sigLabels.production },
+    { trace: warehouse, label: t.landing.proofChapter.sigLabels.warehouse },
+    { trace: distribution, label: t.landing.proofChapter.sigLabels.shipment },
   ];
 
   return (
@@ -401,12 +412,12 @@ function TheProof() {
       <div className="relative z-10 max-w-6xl mx-auto">
         <ChapterHeading
           num="03"
-          kicker="The Proof · Signed, not promised"
+          kicker={t.landing.proofChapter.kicker}
           title={
             <>
-              Every step is a
+              {t.landing.proofChapter.titleA}
               <br />
-              <em className="italic text-ocean">signature.</em>
+              <em className="italic text-ocean">{t.landing.proofChapter.titleB}</em>
             </>
           }
         />
@@ -419,22 +430,22 @@ function TheProof() {
             transition={{ duration: 0.7 }}
           >
             <p className="text-white/55 text-lg leading-relaxed mb-10">
-              The cans waited at {d(warehouse, "Warehouse Name")}, held at{" "}
-              {d(warehouse, "Storage Temp (°C)")}°C for eight days. Then they
-              left on shipment {d(distribution, "Shipment Code")}, and each of
-              those moments exists as an independently verifiable transaction
-              on Solana, not as a row in someone&apos;s database.
+              {t.landing.proofChapter.body(
+                d(warehouse, "Warehouse Name").toString(),
+                d(warehouse, "Storage Temp (°C)").toString(),
+                d(distribution, "Shipment Code").toString()
+              )}
             </p>
 
             <div className="border-t border-white/10">
-              <SpecRow label="Warehouse" value={d(warehouse, "Warehouse Name")} />
+              <SpecRow label={t.landing.proofChapter.spec.warehouse} value={d(warehouse, "Warehouse Name")} />
               <SpecRow
-                label="Storage temp"
+                label={t.landing.proofChapter.spec.temp}
                 value={<span className="inline-flex items-center gap-2"><Snowflake className="w-3.5 h-3.5 text-ocean" />{d(warehouse, "Storage Temp (°C)")}°C</span>}
               />
-              <SpecRow label="Stored" value={`${d(warehouse, "Storage Start")} → ${d(warehouse, "Storage End")}`} />
-              <SpecRow label="Shipment" value={d(distribution, "Shipment Code")} />
-              <SpecRow label="Sailed" value={`${d(distribution, "Departure Date")} → ${d(distribution, "Arrival Date")}`} />
+              <SpecRow label={t.landing.proofChapter.spec.stored} value={`${d(warehouse, "Storage Start")} → ${d(warehouse, "Storage End")}`} />
+              <SpecRow label={t.landing.proofChapter.spec.shipment} value={d(distribution, "Shipment Code")} />
+              <SpecRow label={t.landing.proofChapter.spec.sailed} value={`${d(distribution, "Departure Date")} → ${d(distribution, "Arrival Date")}`} />
             </div>
           </motion.div>
 
@@ -448,12 +459,11 @@ function TheProof() {
           >
             <div className="flex items-center justify-between mb-2">
               <span className="font-mono-data text-xs tracking-[0.25em] uppercase text-white/40">
-                Chain of custody
+                {t.landing.proofChapter.receiptLabel}
               </span>
-              <ShieldCheck className="w-4 h-4 text-gold" />
             </div>
             <p className="font-display text-2xl font-light text-white mb-6">
-              5 signatures · 1 can
+              {t.landing.proofChapter.receiptTitle}
             </p>
             <div className="border-t border-white/10">
               {signatures.map((s) => (
@@ -461,9 +471,9 @@ function TheProof() {
               ))}
             </div>
             <div className="mt-6 pt-4 border-t border-white/10 font-mono-data text-[11px] text-white/30 space-y-1.5">
-              <p>recorder · {shortKey(source?.recorder ?? "")}</p>
-              <p>program · {shortKey("2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc")}</p>
-              <p>cluster · devnet</p>
+              <p>{t.landing.proofChapter.meta.recorder} · {shortKey(source?.recorder ?? "")}</p>
+              <p>{t.landing.proofChapter.meta.program} · {shortKey("2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc")}</p>
+              <p>{t.landing.proofChapter.meta.cluster} · devnet</p>
             </div>
           </motion.div>
         </div>
@@ -475,6 +485,7 @@ function TheProof() {
 /* ═══ CHAPTER 4 · YOUR TURN ═══ */
 
 function YourTurn({ onTraceClick }: { onTraceClick: () => void }) {
+  const { t } = useT();
   const [qr, setQr] = useState("");
 
   useEffect(() => {
@@ -495,17 +506,15 @@ function YourTurn({ onTraceClick }: { onTraceClick: () => void }) {
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <p className="font-mono-data text-xs tracking-[0.35em] uppercase text-ocean mb-6">
-          Chapter 04 · Don&apos;t take our word for it
+          {t.landing.yourTurn.kicker}
         </p>
         <h2 className="font-display text-4xl md:text-6xl font-light text-white leading-[1.05] mb-6">
-          This can is <em className="italic text-gold">real.</em>
+          {t.landing.yourTurn.titleA} <em className="italic text-gold">{t.landing.yourTurn.titleEm}</em>
           <br />
-          Check it.
+          {t.landing.yourTurn.titleB}
         </h2>
         <p className="text-white/50 text-lg max-w-xl mx-auto leading-relaxed mb-12">
-          Scan the code on any TORO can, even this one, and you&apos;ll land
-          on the full trace: every signature, every temperature, every date,
-          straight from the chain.
+          {t.landing.yourTurn.body}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-10">
@@ -527,7 +536,7 @@ function YourTurn({ onTraceClick }: { onTraceClick: () => void }) {
               onClick={onTraceClick}
               className="px-8 py-4 rounded-xl bg-ocean text-white font-semibold hover:bg-ocean/80 transition-all shadow-lg shadow-ocean/25"
             >
-              Trace {STORY_LOT_CODE} →
+              {t.landing.yourTurn.cta(STORY_LOT_CODE)}
             </button>
             <a
               href={PROGRAM_URL}
@@ -535,7 +544,7 @@ function YourTurn({ onTraceClick }: { onTraceClick: () => void }) {
               rel="noopener noreferrer"
               className="font-mono-data text-xs text-white/40 hover:text-ocean transition-colors inline-flex items-center gap-1.5"
             >
-              or inspect the program on Solscan
+              {t.landing.yourTurn.solscan}
               <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -547,14 +556,6 @@ function YourTurn({ onTraceClick }: { onTraceClick: () => void }) {
 
 
 /* ═══ THE VOYAGE · roadmap as a nautical chart ═══ */
-
-const PHASES = [
-  { n: "01", title: "Research & Foundation", dates: "Jun – Aug 2026", status: "done" as const },
-  { n: "02", title: "MVP Development", dates: "Jul – Oct 2026", status: "active" as const },
-  { n: "03", title: "Validation & Partnerships", dates: "Aug – Dec 2026", status: "next" as const },
-  { n: "04", title: "Research & Commercial Prep", dates: "Oct 2026 – Mar 2027", status: "upcoming" as const },
-  { n: "05", title: "Market Expansion", dates: "Q2 – Q4 2027", status: "upcoming" as const },
-];
 
 /* The charted course: a winding sea route through five ports.
    Port coordinates must match the phase nodes in the cards below. */
@@ -570,6 +571,8 @@ const PORTS = [
 ];
 
 function Voyage() {
+  const { t } = useT();
+  const phases = t.landing.voyage.phases;
   const ref = useRef<HTMLElement>(null);
   const chartRef = useRef<HTMLDivElement>(null);
   const routeRef = useRef<SVGPathElement>(null);
@@ -578,6 +581,21 @@ function Voyage() {
   // the chart keeps a fixed 1200:400 aspect, so the CSS offset-path for the
   // ship just needs the route coordinates scaled to the rendered width
   const [chartScale, setChartScale] = useState(1);
+  // CSS offset-path: path() has spotty support (notably older iOS Safari):
+  // the ship only renders where the browser can actually sail it. Beam,
+  // ports and the tag still tell the story everywhere.
+  const [canSail, setCanSail] = useState(false);
+
+  useEffect(() => {
+    try {
+      setCanSail(
+        typeof CSS !== "undefined" &&
+          CSS.supports("offset-path", 'path("M0 0 L10 10")')
+      );
+    } catch {
+      setCanSail(false);
+    }
+  }, []);
 
   useEffect(() => {
     const el = chartRef.current;
@@ -633,15 +651,11 @@ function Voyage() {
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <p className="font-mono-data text-xs tracking-[0.35em] uppercase text-ocean mb-4 text-center">
-          Charted course
+          {t.landing.voyage.kicker}
         </p>
-        <h2 className="font-display text-4xl md:text-6xl font-light text-white text-center leading-[1.05] mb-6">
-          The voyage <em className="italic text-gold">so far.</em>
+        <h2 className="font-display text-4xl md:text-6xl font-light text-white text-center leading-[1.05] mb-16 md:mb-10">
+          {t.landing.voyage.titleA} <em className="italic text-gold">{t.landing.voyage.titleEm}</em>
         </h2>
-        <p className="text-white/40 text-center max-w-lg mx-auto mb-16 md:mb-10">
-          Five ports, one course. The crew has made port twice; the ship is
-          underway on the third leg.
-        </p>
 
         {/* The chart */}
         <div ref={chartRef} className="relative w-full" style={{ aspectRatio: "1200 / 400" }}>
@@ -709,7 +723,7 @@ function Voyage() {
 
             {/* ports */}
             {PORTS.map((p, i) => {
-              const status = PHASES[i].status;
+              const status = phases[i].status;
               return (
                 <g key={i} transform={`translate(${p.x} ${p.y})`}>
                   {status === "active" && (
@@ -743,6 +757,7 @@ function Voyage() {
           </svg>
 
           {/* the ship: sails along the route, rotated with the current bearing */}
+          {canSail && (
           <motion.div
             className="absolute top-0 left-0 w-full h-full pointer-events-none"
             style={
@@ -761,6 +776,7 @@ function Voyage() {
               </svg>
             </div>
           </motion.div>
+          )}
 
           {/* YOU ARE HERE tag at the active port (port 2 = 25% across, 185/400 down) */}
           <motion.div
@@ -768,25 +784,25 @@ function Voyage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 1.1, duration: 0.5 }}
-            className="absolute hidden md:block"
+            className="absolute"
             style={{ left: "25%", top: "46.25%", transform: "translate(-50%, -100%)" }}
           >
             <span className="font-mono-data text-[10px] tracking-[0.25em] uppercase text-ocean bg-ocean/10 border border-ocean/25 rounded-full px-3 py-1 whitespace-nowrap">
-              You are here
+              {t.landing.voyage.youAreHere}
             </span>
           </motion.div>
         </div>
 
-        {/* Phase cards */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4 mt-10 md:mt-16">
-          {PHASES.map((p, i) => (
+        {/* Phase cards: snap-scroll row on phones, 5 columns on desktop */}
+          <div className="flex md:grid md:grid-cols-5 gap-4 md:gap-4 mt-10 md:mt-16 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {phases.map((p, i) => (
             <motion.div
               key={p.n}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: i * 0.1, duration: 0.6 }}
-              className="relative"
+              className="relative min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-center shrink-0 md:shrink"
             >
               <span
                 aria-hidden
@@ -820,10 +836,10 @@ function Voyage() {
                           : "text-white/20"
                   }`}
                 >
-                  {p.status === "done" && "✓ Made port"}
-                  {p.status === "active" && "● Underway"}
-                  {p.status === "next" && "○ Next port"}
-                  {p.status === "upcoming" && "○ Charted"}
+                  {p.status === "done" && t.landing.voyage.statusLabels.done}
+                  {p.status === "active" && t.landing.voyage.statusLabels.active}
+                  {p.status === "next" && t.landing.voyage.statusLabels.next}
+                  {p.status === "upcoming" && t.landing.voyage.statusLabels.upcoming}
                 </p>
               </div>
             </motion.div>
@@ -837,21 +853,19 @@ function Voyage() {
 /* ═══ EXPANSION · where the lanes lead next ═══ */
 
 function Expansion() {
+  const { t } = useT();
   return (
     <section className="relative px-6 md:px-10 py-28 md:py-40 bg-[#08101f] overflow-hidden border-t border-white/[0.06]">
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-14 md:mb-10">
           <p className="font-mono-data text-xs tracking-[0.35em] uppercase text-ocean mb-4">
-            Expansion
+            {t.landing.expansion.kicker}
           </p>
           <h2 className="font-display text-4xl md:text-6xl font-light text-white leading-[1.05] mb-6">
-            The next <em className="italic text-gold">ports of call.</em>
+            {t.landing.expansion.titleA} <em className="italic text-gold">{t.landing.expansion.titleEm}</em>
           </h2>
           <p className="text-white/50 text-lg leading-relaxed">
-            TORO is built for real supply chains, not demos. We are opening
-            pilot lanes from Vietnam to Korea, Japan and the EU, and we are
-            looking for seafood processors, exporters and importers to put
-            their shipments on chain with us.
+            {t.landing.expansion.body}
           </p>
         </div>
 
@@ -861,15 +875,13 @@ function Expansion() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.8 }}
         >
-          <ExpansionMap />
+          <LazySection minHeight={420}>
+            <ExpansionMap />
+          </LazySection>
         </motion.div>
 
-        <p className="font-mono-data text-[11px] text-white/30 text-center mt-6">
-          Demo lanes shown · hover a port · live lanes appear as pilots come aboard
-        </p>
-
         <div className="text-center mt-10">
-          <StampButton href="https://x.com/Trx_Tra">Become a partner</StampButton>
+          <StampButton href="https://x.com/Trx_Tra">{t.landing.expansion.cta}</StampButton>
         </div>
       </div>
     </section>
@@ -887,10 +899,11 @@ const partners = [
 ];
 
 function PartnerStrip() {
+  const { t } = useT();
   return (
     <div>
       <p className="font-mono-data text-[11px] tracking-[0.3em] uppercase text-white/30 text-center mb-10">
-        Incubated &amp; backed by
+        {t.landing.epilogue.partnersLabel}
       </p>
       <div
         className="overflow-hidden"
@@ -931,7 +944,11 @@ const team = [
   { name: "Duy", image: "/team-mascot/Web-app.png", twitter: "https://x.com/DanDuy4" },
 ];
 
+const AWARD_ICONS = [Trophy, Trophy, Trophy];
+const AWARD_COLORS = ["text-gold", "text-gold", "text-gold"];
+
 function Epilogue() {
+  const { t } = useT();
   return (
     <section className="relative px-6 md:px-10 py-20 bg-[#081222] border-t border-white/[0.06]">
       <div className="max-w-6xl mx-auto">
@@ -941,39 +958,28 @@ function Epilogue() {
           {/* Recognition */}
           <div>
             <p className="font-mono-data text-[11px] tracking-[0.3em] uppercase text-white/30 mb-5">
-              Recognition
+              {t.landing.epilogue.recognitionLabel}
             </p>
             <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <Fish className="w-4 h-4 text-gold mt-1 flex-shrink-0" />
-                <div>
-                  <p className="text-white font-medium text-sm">Top 5 Startup, THE NEXGEN 2026</p>
-                  <p className="text-white/35 text-xs mt-0.5">
-                    VNU-HCM Innovative Entrepreneurship Center · New Energy Nexus Vietnam
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Truck className="w-4 h-4 text-[#e08e45] mt-1 flex-shrink-0" />
-                <div>
-                  <p className="text-white font-medium text-sm">Bronze Medal, Design &amp; Fabrication 2026</p>
-                  <p className="text-white/35 text-xs mt-0.5">Youth Science &amp; Technology Development Center</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <Link2 className="w-4 h-4 text-purple mt-1 flex-shrink-0" />
-                <div>
-                  <p className="text-white font-medium text-sm">2nd Runner Up, &ldquo;Bring Your Web2 Ideas Onchain&rdquo; Bounty</p>
-                  <p className="text-white/35 text-xs mt-0.5">Superteam Vietnam</p>
-                </div>
-              </div>
+              {t.landing.epilogue.recognition.map((award, i) => {
+                const Icon = AWARD_ICONS[i];
+                return (
+                  <div key={i} className="flex items-start gap-3">
+                    <Icon className={`w-4 h-4 mt-1 flex-shrink-0 ${AWARD_COLORS[i]}`} />
+                    <div>
+                      <p className="text-white font-medium text-sm">{award.title}</p>
+                      <p className="text-white/35 text-xs mt-0.5">{award.sub}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Team */}
           <div>
             <p className="font-mono-data text-[11px] tracking-[0.3em] uppercase text-white/30 mb-5">
-              Crew
+              {t.landing.epilogue.crewLabel}
             </p>
             <div className="flex flex-wrap gap-5">
               {team.map((member) => (
@@ -1010,12 +1016,12 @@ export default function LandingPage() {
   const router = useRouter();
 
   const handleTraceClick = () => {
-    router.push(`/trace/${STORY_LOT_CODE}`);
+    router.push(`/explorer/${STORY_LOT_CODE}`);
   };
 
   return (
     <div className="flex flex-col min-h-full">
-      <Hero onTraceClick={handleTraceClick} />
+      <Hero />
       <TheCatch />
       <TheFactory />
       <TheProof />

@@ -40,7 +40,7 @@ const HOME_PORT: Port = {
 };
 
 const DESTINATIONS: Port[] = [
-  { id: "busan", coords: [129.07, 35.18], label: "BUSAN", sub: "KOREA", anchor: "middle", dx: 0, dy: -12 },
+  { id: "busan", coords: [129.07, 35.18], label: "BUSAN", sub: "KOREA", anchor: "end", dx: -12, dy: -6 },
   { id: "tokyo", coords: [139.69, 35.68], label: "TOKYO", sub: "JAPAN", anchor: "end", dx: -12, dy: -6 },
   { id: "rotterdam", coords: [4.48, 51.92], label: "ROTTERDAM", sub: "NETHERLANDS", anchor: "start", dx: 12, dy: -6 },
 ];
@@ -123,8 +123,12 @@ function PortNode({
         style={{ transition: "r 0.2s ease" }}
       />
 
-      {/* hover label: floating text, no box */}
-      <g className="map-port-label" opacity={hovered ? 1 : 0}>
+      {/* hover label: floating text, no box; rises slightly as it fades in */}
+      <g
+        className="map-port-label"
+        opacity={hovered ? 1 : 0}
+        style={{ transform: hovered ? "translateY(0)" : "translateY(4px)" }}
+      >
         <text
           x={port.dx}
           y={port.dy}
