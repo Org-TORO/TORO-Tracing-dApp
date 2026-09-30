@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useMemo, useState, useEffect, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import * as THREE from "three";
@@ -101,14 +101,14 @@ function CanModel({
       try {
         // Generate QR code from URL
         const qrCanvas = await generateQRCanvas(
-          "https://toro-dapp.vercel.app/trace/TORO-01"
+          "https://toro-dapp.vercel.app/explorer/TORO-01"
         );
 
         // Load tuna image
         const tunaImg = new Image();
         tunaImg.crossOrigin = "anonymous";
         tunaImg.src = "/tuna_on_can.png";
-        
+
         tunaImg.onload = async () => {
           const tex = await composeLabelTexture(tunaImg, qrCanvas);
           setLabelTex(tex);
@@ -262,7 +262,10 @@ function Scene({ onHoverChange }: { onHoverChange?: (hovered: boolean) => void }
       <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#3e96cc" />
       <pointLight position={[0, 3, 0]} intensity={0.6} color="#ffc354" />
       <CanModel onHoverChange={onHoverChange} />
-      <Environment preset="city" />
+      {/* Same env map as preset="city" (potsdamer_platz_1k.hdr), served
+          locally from /public — the preset URL on raw.githack.com 403s
+          and took the whole canvas down with it. */}
+      <Environment files="/city.hdr" />
     </>
   );
 }
@@ -273,9 +276,18 @@ export default function Can3D({
   onHoverChange?: (hovered: boolean) => void;
 }) {
   const [mounted, setMounted] = useState(false);
+  const [webglOK, setWebglOK] = useState(true);
 
   useEffect(() => {
     setMounted(true);
+    try {
+      const canvas = document.createElement("canvas");
+      const gl =
+        canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+      if (!gl) setWebglOK(false);
+    } catch {
+      setWebglOK(false);
+    }
   }, []);
 
   if (!mounted) {
@@ -286,11 +298,27 @@ export default function Can3D({
     );
   }
 
+  // Headless browsers / disabled GPUs get a static render, never a dead canvas.
+  if (!webglOK) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/tuna_on_can.png"
+          alt="TORO canned tuna"
+          className="max-w-full max-h-full object-contain"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full">
       {/* fov lowered from 45 → 32: acts like zooming out, can fits without cropping */}
       <Canvas camera={{ position: [0, 0.4, 5.5], fov: 36 }}>
-        <Scene onHoverChange={onHoverChange} />
+        <Suspense fallback={null}>
+          <Scene onHoverChange={onHoverChange} />
+        </Suspense>
         <OrbitControls
           enableZoom={false}
           enablePan={false}
