@@ -1,0 +1,58 @@
+// Navbar + Footer strings.
+export const en = {
+  nav: {
+    home: "Home",
+    explorer: "Explorer",
+    docs: "Docs",
+    about: "About",
+    team: "Team",
+    reviewGraph: "Review Graph",
+    contracts: "Contracts",
+    startTracing: "Start Tracing",
+  },
+  footer: {
+    startTracing: "Start Tracing",
+    aboutToro: "About Toro",
+    about: "About",
+    team: "Team",
+    contracts: "Contracts",
+    investor: "Investor",
+    social: "Social",
+    contactUs: "Contact Us",
+    email: "Email",
+    support: "Support",
+    faqs: "FAQs",
+    rights: "All rights reserved.",
+    onChainTraceability: "On-Chain Traceability",
+    traceTagline: "Traceable origin, recorded on the blockchain",
+  },
+};
+
+export const vi: typeof en = {
+  nav: {
+    home: "Trang chủ",
+    explorer: "Khám phá",
+    docs: "Tài liệu",
+    about: "Giới thiệu",
+    team: "Đội ngũ",
+    reviewGraph: "Đồ thị tin cậy",
+    contracts: "Hợp đồng",
+    startTracing: "Truy xuất ngay",
+  },
+  footer: {
+    startTracing: "Truy xuất ngay",
+    aboutToro: "Về TORO",
+    about: "Giới thiệu",
+    team: "Đội ngũ",
+    contracts: "Hợp đồng",
+    investor: "Nhà đầu tư",
+    social: "Mạng xã hội",
+    contactUs: "Liên hệ",
+    email: "Email",
+    support: "Hỗ trợ",
+    faqs: "Câu hỏi thường gặp",
+    rights: "Bảo lưu mọi quyền.",
+    onChainTraceability: "Truy xuất nguồn gốc trên chuỗi khối",
+    traceTagline: "Nguồn gốc truy xuất, ghi nhận trên blockchain",
+  },
+};

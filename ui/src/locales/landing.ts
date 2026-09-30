@@ -1,0 +1,266 @@
+// Landing page strings (ui/app/page.tsx). Dynamic values are functions.
+export const en = {
+  landing: {
+    hero: {
+      kicker: (code: string) => `Solana Devnet · Lot ${code}`,
+      line1: "Every can",
+      em: "remembers",
+      line2: "the ocean.",
+      body: (region: string) =>
+        `This one was caught off ${region}, and every step since the catch has been signed into the Solana blockchain. Nothing was typed in afterwards. Nothing can be.`,
+      scrollCue: "Scroll to trace it",
+    },
+    catchChapter: {
+      kicker: (region: string) => `The Catch · ${region}, Vietnam`,
+      titleA: "Caught the old way.",
+      titleB: "Recorded the new way.",
+      body: (species: string, weight: string, area: string) =>
+        `A ${species} tuna, ${weight} kg of it, hooked by longline in the ${area}. The moment it left the water, a fisher signed the catch into a blockchain, before the ice, before the dock, before anyone could add a forgotten detail.`,
+      quote: (weight: string, date: string) => `${weight} kg, ${date}.`,
+      sigLabel: "Catch record · Solana",
+      manifest: (batch: string) => `Catch manifest · ${batch}`,
+      spec: {
+        species: "Species",
+        method: "Fishing method",
+        region: "Region",
+        area: "Catch area",
+        date: "Catch date",
+        weight: "Catch weight",
+        sourceType: "Source type",
+        foodSafety: "Food safety",
+      },
+    },
+    factoryChapter: {
+      kicker: "The Factory · Quy Nhơn",
+      titleA: (input: string) => `${input} kg of fish in.`,
+      titleB: (cans: string) => `${cans} cans out.`,
+      record: "Production record",
+      spec: {
+        factory: "Factory",
+        received: "Cold storage received",
+        storedAt: "Stored at",
+        productionDate: "Production date",
+        packagingDate: "Packaging date",
+        wastage: "Wastage",
+      },
+      body: "On the factory floor nobody touches a blockchain. Workers scan the batch QR at each station; the app signs and submits the record behind the scenes. Roles live on-chain, so a packing station physically cannot sign a receiving step.",
+      sigLabel: "Production record · Solana",
+      videoCaption: "The field app, on the floor",
+    },
+    proofChapter: {
+      kicker: "The Proof · Signed, not promised",
+      titleA: "Every step is a",
+      titleB: "signature.",
+      body: (warehouse: string, temp: string, shipment: string) =>
+        `The cans waited at ${warehouse}, held at ${temp}°C for eight days. Then they left on shipment ${shipment}, and each of those moments exists as an independently verifiable transaction on Solana, not as a row in someone's database.`,
+      spec: {
+        warehouse: "Warehouse",
+        temp: "Storage temp",
+        stored: "Stored",
+        shipment: "Shipment",
+        sailed: "Sailed",
+      },
+      receiptLabel: "CHAIN OF CUSTODY",
+      receiptTitle: "Chain of custody",
+      sigLabels: {
+        catch: "Catch signed",
+        cold: "Cold storage signed",
+        production: "Production signed",
+        warehouse: "Warehouse signed",
+        shipment: "Shipment signed",
+      },
+      meta: {
+        recorder: "recorder",
+        program: "program",
+        cluster: "cluster",
+      },
+    },
+    yourTurn: {
+      kicker: "Chapter 04 · Don't take our word for it",
+      titleA: "This can is",
+      titleEm: "real.",
+      titleB: "Check it.",
+      body: "Scan the code on any TORO can, even this one, and you'll land on the full trace: every signature, every temperature, every date, straight from the chain.",
+      cta: (code: string) => `Trace ${code} →`,
+      solscan: "or inspect the program on Solscan",
+    },
+    voyage: {
+      kicker: "Chapter 05 · Charted course",
+      titleA: "The voyage",
+      titleEm: "so far.",
+      youAreHere: "We are here",
+      statusLabels: {
+        done: "✓ Made port",
+        active: "● Underway",
+        next: "○ Next port",
+        upcoming: "○ Charted",
+      },
+      phases: [
+        { n: "01", title: "Research & Foundation", dates: "Jun – Aug 2026", status: "done" },
+        { n: "02", title: "MVP Development", dates: "Jul – Oct 2026", status: "active" },
+        { n: "03", title: "Validation & Partnerships", dates: "Aug – Dec 2026", status: "next" },
+        { n: "04", title: "Research & Commercial Prep", dates: "Oct 2026 – Mar 2027", status: "upcoming" },
+        { n: "05", title: "Market Expansion", dates: "Q2 – Q4 2027", status: "upcoming" },
+      ],
+    },
+    expansion: {
+      kicker: "Chapter 06 · Expansion",
+      titleA: "The next",
+      titleEm: "ports of call.",
+      body: "TORO is built for real supply chains, not demos. We are opening pilot lanes from Vietnam to Korea, Japan and the EU, and we are looking for seafood processors, exporters and importers to put their shipments on chain with us.",
+      cta: "Become a partner",
+    },
+    epilogue: {
+      partnersLabel: "Incubated & backed by",
+      recognitionLabel: "Recognition",
+      recognition: [
+        {
+          title: "Top 5 Startup, THE NEXGEN 2026",
+          sub: "VNU-HCM Innovative Entrepreneurship Center · New Energy Nexus Vietnam",
+        },
+        {
+          title: "Bronze Medal, Design & Fabrication 2026",
+          sub: "Youth Science & Technology Development Center",
+        },
+        {
+          title: "2nd Runner Up, “Bring Your Web2 Ideas Onchain” Bounty",
+          sub: "Superteam Vietnam",
+        },
+      ],
+      crewLabel: "Crew",
+    },
+  },
+};
+
+export const vi: typeof en = {
+  landing: {
+    hero: {
+      kicker: (code: string) => `Solana Devnet · Lô ${code}`,
+      line1: "Mỗi lon cá",
+      em: "vẫn nhớ",
+      line2: "biển cả.",
+      body: (region: string) =>
+        `Lon cá này được đánh bắt ngoài khơi ${region}, và từng bước sau đó đều được ghi vào blockchain Solana ngay khi diễn ra. Không dữ liệu nào được nhập lại sau này. Và không ai có thể làm điều đó.`,
+      scrollCue: "Cuộn để truy xuất",
+    },
+    catchChapter: {
+      kicker: (region: string) => `Chuyến đánh bắt · ${region}, Việt Nam`,
+      titleA: "Đánh bắt theo cách của cha ông.",
+      titleB: "Ghi nhận theo cách của tương lai.",
+      body: (species: string, weight: string, area: string) =>
+        `Một con cá ngừ ${species}, nặng ${weight} kg, được câu bằng cần câu dài ngoài ${area}. Ngay khi rời khỏi mặt nước, ngư dân đã ghi chuyến đánh bắt vào blockchain: trước cả khi ướp đá, trước cả khi cập bến, trước cả khi ai đó có thể bổ sung một chi tiết nào đó.`,
+      quote: (weight: string, date: string) => `${weight} kg, ${date}.`,
+      sigLabel: "Bản ghi đánh bắt · Solana",
+      manifest: (batch: string) => `Biên bản đánh bắt · ${batch}`,
+      spec: {
+        species: "Loài cá",
+        method: "Phương pháp đánh bắt",
+        region: "Vùng biển",
+        area: "Khu vực đánh bắt",
+        date: "Ngày đánh bắt",
+        weight: "Khối lượng",
+        sourceType: "Nguồn gốc",
+        foodSafety: "An toàn thực phẩm",
+      },
+    },
+    factoryChapter: {
+      kicker: "Nhà máy · Quy Nhơn",
+      titleA: (input: string) => `${input} kg cá tươi vào.`,
+      titleB: (cans: string) => `${cans} lon ra.`,
+      record: "Bản ghi sản xuất",
+      spec: {
+        factory: "Nhà máy",
+        received: "Ngày nhập kho lạnh",
+        storedAt: "Nơi lưu trữ",
+        productionDate: "Ngày sản xuất",
+        packagingDate: "Ngày đóng gói",
+        wastage: "Hao hụt",
+      },
+      body: "Trên dây chuyền, không ai phải chạm vào blockchain. Công nhân chỉ quét mã QR của lô nguyên liệu tại từng trạm; ứng dụng sẽ ký và gửi bản ghi ngầm phía sau. Quyền hạn nằm trên chuỗi, nên trạm đóng gói không bao giờ ký được bước kiểm nhận.",
+      sigLabel: "Bản ghi sản xuất · Solana",
+      videoCaption: "Ứng dụng thực địa, ngay trên dây chuyền",
+    },
+    proofChapter: {
+      kicker: "Bằng chứng · Ký xác, không hứa hẹn",
+      titleA: "Mỗi bước đi là một",
+      titleB: "chữ ký.",
+      body: (warehouse: string, temp: string, shipment: string) =>
+        `Những lon cá được lưu tại ${warehouse}, duy trì ở ${temp}°C suốt tám ngày. Sau đó chúng lên đường trên chuyến hàng ${shipment}, và từng khoảnh khắc ấy tồn tại như một giao dịch có thể kiểm chứng độc lập trên Solana, chứ không phải một dòng trong cơ sở dữ liệu của ai đó.`,
+      spec: {
+        warehouse: "Kho lạnh",
+        temp: "Nhiệt độ bảo quản",
+        stored: "Thời gian lưu kho",
+        shipment: "Chuyến hàng",
+        sailed: "Hành trình",
+      },
+      receiptLabel: "CHUỖI VẬT CHỨNG",
+      receiptTitle: "Chain of custody",
+      sigLabels: {
+        catch: "Đã ký đánh bắt",
+        cold: "Đã ký nhập kho lạnh",
+        production: "Đã ký sản xuất",
+        warehouse: "Đã ký lưu kho",
+        shipment: "Đã ký vận chuyển",
+      },
+      meta: {
+        recorder: "người ghi",
+        program: "chương trình",
+        cluster: "mạng lưới",
+      },
+    },
+    yourTurn: {
+      kicker: "Chương 04 · Đừng tin lời chúng tôi",
+      titleA: "Lon cá này là",
+      titleEm: "thật.",
+      titleB: "Hãy kiểm chứng.",
+      body: "Quét mã trên bất kỳ lon TORO nào, kể cả lon này, và bạn sẽ đến được trang truy xuất đầy đủ: từng chữ ký, từng nhiệt độ, từng ngày tháng, trực tiếp từ chuỗi khối.",
+      cta: (code: string) => `Truy xuất ${code} →`,
+      solscan: "hoặc kiểm tra chương trình trên Solscan",
+    },
+    voyage: {
+      kicker: "Chương 05 · Hải trình đã vạch",
+      titleA: "Chặng đường",
+      titleEm: "đến hôm nay.",
+      youAreHere: "Chúng tôi đang ở đây",
+      statusLabels: {
+        done: "✓ Đã cập bến",
+        active: "● Đang đi",
+        next: "○ Cảng tiếp theo",
+        upcoming: "○ Đã vạch sẵn",
+      },
+      phases: [
+        { n: "01", title: "Nghiên cứu & Nền tảng", dates: "Tháng 6 – 8/2026", status: "done" },
+        { n: "02", title: "Phát triển MVP", dates: "Tháng 7 – 10/2026", status: "active" },
+        { n: "03", title: "Thử nghiệm & Đối tác", dates: "Tháng 8 – 12/2026", status: "next" },
+        { n: "04", title: "Nghiên cứu & Chuẩn bị thương mại", dates: "10/2026 – 3/2027", status: "upcoming" },
+        { n: "05", title: "Mở rộng thị trường", dates: "Quý 2 – 4/2027", status: "upcoming" },
+      ],
+    },
+    expansion: {
+      kicker: "Chương 06 · Mở rộng",
+      titleA: "Những cảng",
+      titleEm: "tiếp theo.",
+      body: "TORO được xây dựng cho chuỗi cung ứng thật, chứ không phải bản demo. Chúng tôi đang mở các tuyến thử nghiệm từ Việt Nam đến Hàn Quốc, Nhật Bản và EU, và tìm kiếm các nhà chế biến, xuất khẩu, nhập khẩu thủy hải sản để cùng đưa lô hàng lên chuỗi khối.",
+      cta: "Trở thành đối tác",
+    },
+    epilogue: {
+      partnersLabel: "Được ươm tạo & đồng hành bởi",
+      recognitionLabel: "Giải thưởng",
+      recognition: [
+        {
+          title: "Top 5 Startup, THE NEXGEN 2026",
+          sub: "Trung tâm Khởi nghiệp Đổi mới sáng tạo VNU-HCM · New Energy Nexus Vietnam",
+        },
+        {
+          title: "Huy chương Đồng, Design & Fabrication 2026",
+          sub: "Trung tâm Phát triển Khoa học & Công nghệ Trẻ",
+        },
+        {
+          title: "Á quân 2, bounty “Bring Your Web2 Ideas Onchain”",
+          sub: "Superteam Vietnam",
+        },
+      ],
+      crewLabel: "Thủy thủ đoàn",
+    },
+  },
+};

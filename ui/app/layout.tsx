@@ -2,11 +2,38 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import FooterWrapper from "@/components/FooterWrapper";
+import { I18nProvider } from "@/src/lib/i18n";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://toro-dapp.vercel.app"),
   title: "TORO: Traceable Ocean Resource Origin",
   description:
-    "From Ocean to Can. Verified on Chain. TORO traces every tuna can from hatchery or catch to your shelf, immutably recorded on Solana.",
+    "Every tuna can remembers the ocean. TORO traces each can from catch to shelf, immutably signed on Solana. Scan a can and see its verified journey.",
+  openGraph: {
+    title: "TORO: Traceable Ocean Resource Origin",
+    description:
+      "Every tuna can remembers the ocean. Scan a TORO can and see its journey from catch to shelf, verified on Solana.",
+    url: "/",
+    siteName: "TORO",
+    images: [
+      {
+        url: "/tuna_on_can.png",
+        width: 1053,
+        height: 496,
+        alt: "TORO canned tuna, traced from ocean to shelf",
+      },
+    ],
+    locale: "en_US",
+    alternateLocale: "vi_VN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TORO: Traceable Ocean Resource Origin",
+    description:
+      "Every tuna can remembers the ocean. Scan a TORO can and see its verified journey on Solana.",
+    images: ["/tuna_on_can.png"],
+  },
 };
 
 export default function RootLayout({
@@ -15,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi">
+    <html lang="en">
       <head>
         <link
           rel="stylesheet"
@@ -29,9 +56,11 @@ export default function RootLayout({
         />
       </head>
       <body className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <FooterWrapper />
+        <I18nProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <FooterWrapper />
+        </I18nProvider>
       </body>
     </html>
   );
