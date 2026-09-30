@@ -22,7 +22,7 @@ ui/scripts/indexer-solana.ts  (crawls logs, decodes abi payloads)
 ui/src/data/traceIndex.json   (static snapshot — the UI's ONLY data source)
         │
         ▼
-Next.js UI: /trace/[id] detail pages, /trustgraph, landing page
+Next.js UI: /explorer/[id] detail pages, /trustgraph, landing page
 ```
 
 - **Two-level lifecycle:** Batches (raw material, stages 1→2→3) are merged into
@@ -51,7 +51,7 @@ Next.js UI: /trace/[id] detail pages, /trustgraph, landing page
 - **Program allows authority to bypass roles** (mirrors EVM design) — fine for
   demo, revisit for production.
 - **Hardcoded bits:** Can3D QR points at
-  `https://toro-dapp.vercel.app/trace/TORO-01`; landing page pulls TORO-01 as
+  `https://toro-dapp.vercel.app/explorer/TORO-01`; landing page pulls TORO-01 as
   the story lot.
 - **Old EVM origins** still visible: abi-encoded payloads, CODE_REGISTRY, seed
   script mirrors Solidity scripts. Keep EVM parity unless deliberately breaking.

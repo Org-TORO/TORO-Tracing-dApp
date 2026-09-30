@@ -4,6 +4,145 @@ Newest first. One entry per work session: what was done, verified, and what's
 next. **Update this at the end of every session** — it's the cheapest way for
 any agent (or human) to resume without re-reading the codebase.
 
+## 2026-09-30 — Re-applied broken hero 3D can fix (session 6)
+
+**Found:** session 5's fix never landed in the working tree —
+`ui/components/Can3D.tsx` still had `<Environment preset="city" />` plus the
+stale `/trace/TORO-01` QR URL.
+
+**Fix (`ui/components/Can3D.tsx`):**
+- Replaced CDN HDR preset with procedural `<Environment resolution={256}>` +
+  `<Lightformer>` studio rig (ocean/gold). Zero network requests.
+- Wrapped scene in `<Suspense fallback={null}>`.
+- Added WebGL-unavailable detection → static `tuna_on_can.png` fallback.
+- Fixed QR URL to `/explorer/TORO-01`. Lightformer `scale` uses 3-tuples
+  (`[4,2,1]`) to satisfy R3F types.
+
+**Verified:** `npx tsc --noEmit` clean; `npm run build` green (11 pages).
+
+## 2026-09-30 — Fixed broken hero 3D can (session 5)
+
+**Root cause:** `Can3D` used drei's `<Environment preset="city" />`, which
+fetches `city.hdr` from `raw.githack.com` at runtime. That CDN now returns
+**HTTP 403**, so the env-map suspense rejects and the whole canvas tree
+breaks (white dead area in the hero). Nothing to do with the dynamic import
+from session 4 — the chunk split is fine.
+
+**Fix (`ui/components/Can3D.tsx`):**
+- Replaced the CDN HDR preset with procedural `<Environment resolution>`
+  + `<Lightformer>` studio rig in TORO's ocean/gold palette. Zero network
+  requests, same metallic reflections.
+- Wrapped the scene in `<Suspense fallback={null}>` so any future async
+  asset failure can't hang the canvas again.
+- Added WebGL-unavailable detection: headless browsers / disabled GPUs now
+  get a static `tuna_on_can.png` render instead of a dead canvas.
+
+**Verified:**
+- `npx tsc --noEmit` clean; `npm run build` green.
+- three.js ships in its own split chunk; the `githack` URL survives only as
+  dead bundled string in drei (never called).
+
+## 2026-09-30 — Landing enhancement pass (session 4)
+
+**Done (all 7 review items):**
+1. Hero dual CTA: quiet gold "Trace this can →" link next to "Read its
+   story" (kept the no-buttons minimalism). New `landing.hero.traceCta`
+   key (en+vi).
+2. Metadata: OG + Twitter cards (`tuna_on_can.png`), sharper description,
+   `metadataBase`, `alternateLocale: vi_VN`.
+3. Chapter numbering: Voyage → "Chapter 05", Expansion → "Chapter 06"
+   (Your Turn already claimed 04; Epilogue stays unnumbered).
+4. Perf: new `LazySection` (IntersectionObserver) + `next/dynamic` for
+   `Can3D` (ssr:false, async) and `ExpansionMap` (loads only when scrolled
+   near). `/` dropped **313 kB → 17.6 kB page, 478 kB → 184 kB first load**.
+5. Voyage mobile/Safari: "YOU ARE HERE" tag now shows on mobile; ship only
+   renders where `CSS.supports("offset-path", path(...))` (older iOS Safari
+   gets beam + ports + tag, no stranded ship); phase cards are a snap-scroll
+   row on phones, 5-col grid on desktop.
+6. Reduced motion: global CSS kill-switch for ambient loops
+   (marquee/map/ping/pulse/spin) + `useReducedMotion` guard on hero
+   parallax (content stays put).
+
+**Verified:**
+- `npx tsc --noEmit` clean; `npm run build` green.
+- `dist/index.html` contains "Trace this can", Chapters 05/06, OG +
+  Twitter meta.
+
+**Next:**
+- [ ] Real-device check: ship animation on iOS Safari, hero CTA tap targets
+- [ ] Link-unfurl preview check (OG image 1053×496, slightly off 1.91:1)
+- [ ] Consider compressing 1.5 MB `Dark_bg.png` hero background
+
+## 2026-09-30 — Route rename /trace → /explorer + themed explorer (session 3)
+
+**Done:**
+- Hard-renamed `ui/app/trace/` → `ui/app/explorer/` (user chose no redirect
+  shim; old printed `/trace/...` QRs will 404). Updated every reference:
+  Navbar links + detail-hide rule, Footer link, FooterWrapper trace-footer
+  rule, detail back-link, landing `TRACE_URL` + story CTA, Can3D QR texture
+  URL, search-page push. Also wired the previously missed `t.nav.home`.
+- Explorer search is no longer a generic tool page: chapter-style kicker +
+  Fraunces display headline (same language as the landing), plus demo-lot
+  chips (TORO-01..05 from `traceIndex.json`). New dict keys
+  `trace.search.kicker` / `demoLabel` (en+vi).
+- Detail passport now renders as a glowing phone sheet (`rounded-[32px]` +
+  ocean glow + border) on a dark ambient backdrop on tablet/desktop, while
+  staying fullscreen on phones for the QR-scan flow.
+- Docs: AGENTS.md route map, PROJECT-STATE, LANDING-REDESIGN updated.
+- Housekeeping: deleted stale `ui/dist/` + `ui/.next/` caches (both
+  gitignored) after the rename left ghost `dist/types/app/trace/*` refs
+  that broke `tsc` and the build.
+
+**Verified:**
+- `npx tsc --noEmit` clean; `npm run build` green — routes now
+  `/explorer`, `/explorer/TORO-01..05`, `/trustgraph`; `dist/explorer.html`
+  prerenders English default.
+
+**Next:**
+- [ ] Reprint / resticker real cans with `/explorer/...` QRs (old ones 404)
+- [ ] Visual pass in `npm run dev`: explorer search + phone-sheet framing,
+  VI toggle overflow check
+- [ ] Optional: camera QR-scan hero on explorer (needs HTTPS + permission
+  UX), on-chain value localization
+
+## 2026-09-30 — EN/VI locale refactor completed (continued from dead agent)
+
+**Done:**
+- Resumed the half-finished EN (default) / VI i18n refactor. Infra already
+  existed (`ui/src/lib/i18n.tsx` provider + `ui/src/locales/{landing,nav,
+  trace,graph,story}.ts`, Navbar toggle, `layout.tsx` wrapped in
+  `I18nProvider`, `html lang="en"`).
+- Fixed **broken build**: `TraceTreeAnimation.tsx` referenced deleted
+  `stages`/`branches` vars (prior agent added `buildStoryData` but never
+  wired it). Now resolves locale strings via `useT()` + `useMemo`, effect
+  re-runs on locale change; ORIGIN/CONSUMERS/legend translated.
+- Finished landing: proof body + spec labels + `PartnerStrip` label now from
+  `t.landing` (was hardcoded English).
+- Wired trace search page (`t.trace.search`) and `TraceDetailClient`
+  (`t.trace.detail`: stages, KPIs, labels, certs, custody, not-found;
+  `fmtDate` now follows active locale `vi-VN`/`en-US`).
+- Wired trustgraph whitepaper page + `TrustGraphSimulator` (`t.graph`,
+  `t.graph.sim`); fixed `en.sim` dict which still contained Vietnamese
+  strings; fixed VI typos (`rồi khỏi`→`rời khỏi`, `đốI tác`→`đối tác`,
+  `ngườI`→`người`, `thờigian`→`thời gian`).
+- Left untranslated (proper nouns / non-user text): port names on
+  `ExpansionMap`, chain data (species/dates/tx sigs), `StageCard` +
+  `TraceTimeline` (unused dead code), static `metadata` in `layout.tsx`.
+
+**Verified:**
+- `npx tsc --noEmit` clean; `npm run build` green (11 pages).
+- `dist/index.html` prerenders English default ("Every can", `lang="en"`);
+  trace detail pages are client-rendered so locale resolves at runtime via
+  localStorage (`toro-locale`).
+
+**Next:**
+- [ ] Visual pass in `npm run dev`: toggle VI/EN on every route, check for
+  overflow (VI strings run longer, esp. simulator buttons + custody rows)
+- [ ] Decide whether on-chain data values (species, regions) stay in source
+  language or get mapped per locale
+- [ ] Remove or revive dead `TraceTreeAnimation` / `StageCard` /
+  `TraceTimeline` components
+
 ## 2026-09-26 — Landing page story redesign (session 1, continued)
 
 **Done:**

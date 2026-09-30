@@ -10,7 +10,7 @@ https://toro-dapp.vercel.app
 
 ```
 ui/                Next.js 15 (App Router) marketing + traceability site
-  app/             Routes: / (landing), /trace, /trace/[id], /trustgraph
+  app/             Routes: / (landing), /explorer, /explorer/[id], /trustgraph
   components/      Can3D (react-three-fiber), TrustGraphSimulator, TraceTreeAnimation, etc.
   src/lib/trace.ts Types + fetchProductLot() over the static JSON index
   src/data/traceIndex.json  GENERATED FILE — do not hand-edit (see Indexer)

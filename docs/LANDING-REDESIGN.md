@@ -25,7 +25,7 @@ protagonist; the blockchain is the plot device, not the headline.
 | 1 | **The Catch** | Real source data: Yellowfin, Longline, Bình Định, Pacific Ocean, 800 kg, HACCP. Editorial spec-sheet rows + ocean visual. | `traceIndex.json` → TORO-01 batch stage 1 |
 | 2 | **The Factory** | 1,950 kg in → 3,900 cans out; facility footage (kept). | batch stages 2–3 |
 | 3 | **The Proof** | Cold storage 2 °C, warehouse, shipment — then the reveal: every step is a signed tx on Solana. Show real tx hash / recorder key / Solscan link in mono. | lot stages 4–5 |
-| 4 | **Your Turn** | "Scan it yourself." QR of the trace URL + CTA to `/trace/TORO-01`. | generated client-side |
+| 4 | **Your Turn** | "Scan it yourself." QR of the trace URL + CTA to `/explorer/TORO-01`. | generated client-side |
 | 5 | **Epilogue** | Compressed: partners marquee, awards (3 items), team (4 avatars), roadmap link, footer as usual. | static |
 
 Post-brief addition: **Expansion** chapter (between Voyage and Epilogue),
