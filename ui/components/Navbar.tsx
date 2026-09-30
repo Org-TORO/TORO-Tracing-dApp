@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useT } from "@/src/lib/i18n";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const { locale, setLocale, t } = useT();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -14,8 +16,8 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Hide navbar on trace detail pages
-  if (pathname.startsWith("/trace/")) return null;
+  // Hide navbar on explorer detail pages (QR-scan phone view)
+  if (pathname.startsWith("/explorer/")) return null;
 
   return (
     <nav
@@ -48,35 +50,35 @@ export default function Navbar() {
                 : "text-white/50 hover:text-white"
             }`}
           >
-            Home
+            {t.nav.home}
           </Link>
           <Link
-            href="/trace"
+            href="/explorer"
             className={`transition-colors no-underline font-medium ${
-              pathname === "/trace"
+              pathname === "/explorer"
                 ? "text-white"
                 : "text-white/50 hover:text-white"
             }`}
           >
-            Explorer
+            {t.nav.explorer}
           </Link>
           <a
             href="/#docs"
             className="transition-colors no-underline font-medium text-white/50 hover:text-white"
           >
-            Docs
+            {t.nav.docs}
           </a>
           <a
             href="/#about"
             className="transition-colors no-underline font-medium text-white/50 hover:text-white"
           >
-            About
+            {t.nav.about}
           </a>
           <a
             href="/#team"
             className="transition-colors no-underline font-medium text-white/50 hover:text-white"
           >
-            Team
+            {t.nav.team}
           </a>
           <Link
             href="/trustgraph"
@@ -86,25 +88,32 @@ export default function Navbar() {
                 : "text-white/50 hover:text-white"
             }`}
           >
-            Review Graph
+            {t.nav.reviewGraph}
           </Link>
         </div>
 
         {/* Right CTAs */}
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setLocale(locale === "en" ? "vi" : "en")}
+            className="font-mono-data text-xs tracking-[0.2em] text-white/50 hover:text-white border border-white/[0.08] hover:border-white/20 rounded-lg px-3 py-2 transition-all"
+            aria-label="Switch language"
+          >
+            {locale === "en" ? "VI" : "EN"}
+          </button>
           <a
             href="https://solscan.io/account/2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc?cluster=devnet"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex px-4 py-2 rounded-lg border border-white/[0.08] text-white/50 hover:text-white hover:border-white/20 transition-all text-sm font-medium no-underline"
           >
-            Contracts
+            {t.nav.contracts}
           </a>
           <Link
-            href="/trace"
+            href="/explorer"
             className="px-5 py-2 rounded-lg bg-ocean text-white font-medium text-sm hover:bg-ocean/80 transition-colors no-underline"
           >
-            Start Tracing
+            {t.nav.startTracing}
           </Link>
         </div>
       </div>

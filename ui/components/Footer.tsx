@@ -1,7 +1,11 @@
+"use client";
+
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { useT } from "@/src/lib/i18n";
 
 export default function Footer() {
+  const { t } = useT();
   return (
     <footer className="w-full bg-gradient-to-b from-[#0a1628] via-[#091426] to-[#050e1a] border-t border-white/[0.06]">
       {/* Main footer content */}
@@ -18,36 +22,36 @@ export default function Footer() {
               <span className="text-lg font-semibold text-white">TORO</span>
             </div>
             <Link
-              href="/trace"
+              href="/explorer"
               className="inline-block px-4 py-2 rounded-lg bg-ocean text-white font-medium text-sm hover:bg-ocean/80 transition-colors no-underline"
             >
-              Start Tracing
+              {t.footer.startTracing}
             </Link>
           </div>
 
           {/* About TORO */}
           <div>
-            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">About Toro</h3>
+            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">{t.footer.aboutToro}</h3>
             <div className="space-y-3">
               <a href="/#about" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
-                About
+                {t.footer.about}
               </a>
               <a href="/#team" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
-                Team
+                {t.footer.team}
               </a>
               <a href="https://solscan.io/account/2cbYretd93guxpURxqhq1UedBtwSHzT2NX6MsrBc4FWc?cluster=devnet" target="_blank" rel="noopener noreferrer" className="block text-white/60 hover:text-ocean text-sm transition-colors no-underline flex items-center gap-1.5">
-                Contracts
+                {t.footer.contracts}
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a href="#" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
-                Investor
+                {t.footer.investor}
               </a>
             </div>
           </div>
 
           {/* Social */}
           <div>
-            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Social</h3>
+            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">{t.footer.social}</h3>
             <div className="space-y-3">
               <a href="#" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
                 X / Twitter
@@ -66,16 +70,16 @@ export default function Footer() {
 
           {/* Contact Us */}
           <div>
-            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">Contact Us</h3>
+            <h3 className="text-white font-semibold text-sm mb-4 uppercase tracking-wider">{t.footer.contactUs}</h3>
             <div className="space-y-3">
               <a href="mailto:hello@toro.io" className="block text-white/60 hover:text-ocean text-sm transition-colors no-underline">
-                Email
+                {t.footer.email}
               </a>
               <a href="#" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
-                Support
+                {t.footer.support}
               </a>
               <a href="#" className="block text-white/60 hover:text-white text-sm transition-colors no-underline">
-                FAQs
+                {t.footer.faqs}
               </a>
             </div>
           </div>
@@ -87,11 +91,11 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/40">
-        <p>© {new Date().getFullYear()} TORO. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} TORO. {t.footer.rights}</p>
         <div className="flex items-center gap-4 text-xs">
           <span>Solana Devnet</span>
           <span className="text-white/10">•</span>
-          <span>On-Chain Traceability</span>
+          <span>{t.footer.onChainTraceability}</span>
         </div>
       </div>
     </footer>

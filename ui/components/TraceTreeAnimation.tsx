@@ -1,6 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
+import { useT } from "@/src/lib/i18n";
+import type { en as storyEn } from "@/src/locales/story";
+
+type StoryDict = (typeof storyEn)["story"];
 
 const DEEP = "#0a1628";
 const WHITE = "#ffffff";
@@ -56,28 +60,53 @@ interface ComputedBranch extends Branch {
   endX: number;
 }
 
-/* ─── Data ─── */
+/* ─── Data ───
+   Geometry and animation structure stay here; user-facing text is stored
+   as keys (`labelKey` / `titleKey` / `subKey`) resolved per-locale by
+   `buildStoryData`. Literal `title`/`sub` values are function names
+   (graphCheck(), mpcSign(), …) and place names — never translated. */
 
-const stages = [
-  { x: 0.10, label: "SOURCE", color: "#00bf63" },
-  { x: 0.22, label: "INVENTORY", color: "#3e96cc" },
-  { x: 0.40, label: "MANUFACTURING", color: "#3e96cc" },
-  { x: 0.54, label: "WAREHOUSE", color: "#ffc354" },
-  { x: 0.62, label: "DISTRIBUTION", color: "#ffc354" },
-];
+const stageDefs = [
+  { x: 0.10, labelKey: "source", color: "#00bf63" },
+  { x: 0.22, labelKey: "inventory", color: "#3e96cc" },
+  { x: 0.40, labelKey: "manufacturing", color: "#3e96cc" },
+  { x: 0.54, labelKey: "warehouse", color: "#ffc354" },
+  { x: 0.62, labelKey: "distribution", color: "#ffc354" },
+] as const;
 
-const branches: Branch[] = [
+interface BranchNodeDef {
+  type: NodeType;
+  /** Literal title (function name) — not translated. */
+  title?: string;
+  /** Key into t.story.nodes — translated per locale. */
+  titleKey?: string;
+  /** Literal sub-label — not translated. */
+  sub?: string;
+  /** Key into t.story.nodes — translated per locale. */
+  subKey?: string;
+  future?: boolean;
+}
+
+interface BranchDef {
+  stageX: number;
+  side: "top" | "bottom";
+  color: string;
+  y: number;
+  nodes: BranchNodeDef[];
+}
+
+const branchDefs: BranchDef[] = [
   {
     stageX: 0.10,
     side: "top",
     color: "#00bf63",
     y: 0.13,
     nodes: [
-      { type: "pill", title: "Catch Yellowfin", sub: "Bình Định" },
+      { type: "pill", titleKey: "catchYellowfin", sub: "Bình Định" },
       { type: "circle", title: "humanProcess()", future: true },
       { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "mpcSign()", future: true },
-      { type: "circle", title: "mintBatch()", sub: "800kg on-chain" },
+      { type: "circle", title: "mintBatch()", subKey: "batchOnchain" },
     ],
   },
   {
@@ -86,7 +115,7 @@ const branches: Branch[] = [
     color: "#3e96cc",
     y: 0.66,
     nodes: [
-      { type: "pill", title: "Port Receipt", sub: "Weight · GPS · Time" },
+      { type: "pill", titleKey: "portReceipt", subKey: "weightGpsTime" },
       { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "recordInventory()" },
     ],
@@ -97,10 +126,10 @@ const branches: Branch[] = [
     color: "#3e96cc",
     y: 0.24,
     nodes: [
-      { type: "pill", title: "Processing", sub: "Canning · Labeling" },
+      { type: "pill", titleKey: "processing", subKey: "canningLabeling" },
       { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "recordManufacturing()" },
-      { type: "circle", title: "createProductLot()", sub: "merge batches → lot" },
+      { type: "circle", title: "createProductLot()", subKey: "mergeToLot" },
     ],
   },
   {
@@ -109,7 +138,7 @@ const branches: Branch[] = [
     color: "#ffc354",
     y: 0.82,
     nodes: [
-      { type: "pill", title: "Storage", sub: "Temp Monitor" },
+      { type: "pill", titleKey: "storage", subKey: "tempMonitor" },
       { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "mpcSign()", future: true },
       { type: "circle", title: "recordWarehouse()" },
@@ -121,16 +150,51 @@ const branches: Branch[] = [
     color: "#ffc354",
     y: 0.38,
     nodes: [
-      { type: "pill", title: "Logistics", sub: "Delivery Tracking" },
+      { type: "pill", titleKey: "logistics", subKey: "deliveryTracking" },
       { type: "pill", title: "graphCheck()", future: true },
       { type: "circle", title: "recordDistribution()" },
     ],
   },
 ];
 
+/** Resolve stage/branch text keys against the active-locale dictionary. */
+function buildStoryData(s: StoryDict) {
+  const nodeText: Record<string, string> = s.nodes;
+  const tr = (key: string) => nodeText[key] ?? key;
+
+  const stages = stageDefs.map((d) => ({
+    x: d.x,
+    label: s.stages[d.labelKey],
+    color: d.color,
+  }));
+
+  const branches: Branch[] = branchDefs.map((b) => ({
+    stageX: b.stageX,
+    side: b.side,
+    color: b.color,
+    y: b.y,
+    nodes: b.nodes.map((n) => ({
+      type: n.type,
+      title: n.titleKey ? tr(n.titleKey) : (n.title ?? ""),
+      ...(n.subKey
+        ? { sub: tr(n.subKey) }
+        : n.sub
+          ? { sub: n.sub }
+          : {}),
+      ...(n.future ? { future: true } : {}),
+    })),
+  }));
+
+  return { stages, branches, origin: s.origin, consumers: s.consumers };
+}
+
 /* ─── Component ─── */
 
 export default function TraceTreeAnimation() {
+  const { t } = useT();
+  const story = useMemo(() => buildStoryData(t.story), [t]);
+  const { stages, branches, origin, consumers } = story;
+  const legend = t.story.legend;
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number>(0);
@@ -650,7 +714,7 @@ export default function TraceTreeAnimation() {
         ctx.fillStyle = WHITE_50;
         ctx.textAlign = "center";
         ctx.textBaseline = "bottom";
-        ctx.fillText("ORIGIN", leftX * W, trunkY * H - 12 * scale);
+        ctx.fillText(origin, leftX * W, trunkY * H - 12 * scale);
         ctx.restore();
       }
 
@@ -681,7 +745,7 @@ export default function TraceTreeAnimation() {
 
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
-        ctx.fillText("CONSUMERS", labelX, ey);
+        ctx.fillText(consumers, labelX, ey);
         ctx.restore();
       }
 
@@ -769,7 +833,7 @@ export default function TraceTreeAnimation() {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [stages, branches, origin, consumers]);
 
   return (
     <div className="relative w-full">
@@ -793,11 +857,11 @@ export default function TraceTreeAnimation() {
       <div className="flex items-center justify-center gap-6 mt-3 text-xs text-white/40">
         <span className="flex items-center gap-2">
           <span className="inline-block w-2.5 h-2.5 rounded-full bg-ocean" />
-          On-chain today
+          {legend.onchainToday}
         </span>
         <span className="flex items-center gap-2">
           <span className="inline-block w-2.5 h-2.5 rounded-full border border-dashed border-white/50" />
-          Roadmap: off-chain verification
+          {legend.roadmap}
         </span>
       </div>
     </div>

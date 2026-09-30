@@ -8,12 +8,15 @@ import {
   Network,
 } from "lucide-react";
 import TrustGraphSimulator from "@/components/TrustGraphSimulator";
+import { useT } from "@/src/lib/i18n";
 
 const Math = ({ children }: { children: React.ReactNode }) => (
   <span className="font-serif italic font-semibold text-ocean">{children}</span>
 );
 
 export default function TrustGraphPage() {
+  const { t } = useT();
+  const g = t.graph;
   return (
     <div className="flex flex-col min-h-full bg-[#0a1628]">
       {/* ─── HERO ─── */}
@@ -30,7 +33,7 @@ export default function TrustGraphPage() {
           className="relative z-10 max-w-4xl mx-auto"
         >
           <p className="mb-4 text-sm md:text-base text-gold/90 font-medium tracking-wide uppercase">
-            Whitepaper is under construction and will be updated soon.
+            {g.hero.notice}
           </p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
             <span className="text-ocean">T</span>rust
@@ -38,8 +41,7 @@ export default function TrustGraphPage() {
             <span className="text-gold">Protocol 2.0</span>
           </h1>
           <p className="text-lg md:text-xl text-white/50 max-w-3xl mx-auto leading-relaxed">
-            Graph & AI-based Trust Evaluation Network for High-Risk Food /
-            Seafood Supply Chains
+            {g.hero.subtitle}
           </p>
         </motion.div>
       </section>
@@ -61,24 +63,24 @@ export default function TrustGraphPage() {
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-white border-b-2 border-ocean pb-2 mb-5">
-              I. Vision & Technological Philosophy
+              {g.s1.title}
             </h2>
             <p className="text-white/60 mb-4 leading-relaxed">
-              The system completely resolves the{" "}
+              {g.s1.p1a}
               <strong className="text-white">
-                &quot;Garbage In - Garbage Out&quot; (GIGO)
+                {g.s1.gigo}
               </strong>{" "}
-              dilemma on Blockchain using a{" "}
-              <strong className="text-white">Zero-Trust philosophy</strong>.
+              {g.s1.p1b}
+              <strong className="text-white">{g.s1.zeroTrust}</strong>
+              {g.s1.p1c}
             </p>
             <div className="bg-ocean/5 border-l-4 border-ocean p-4 text-white/70 rounded-r-lg">
-              Instead of considering Blockchain as the core, the project
-              positions it merely as an <em>&quot;Evidence Storage Layer&quot;</em>. The
-              heart and brain of the system lie in two core technologies: the{" "}
-              <strong className="text-white">Graph Analytics Engine</strong> and
-              the <strong className="text-white">Dynamic AI Risk Engine</strong>
-              , combined with a human network (Human Protocol) to verify
-              physical truths before recording them on-chain.
+              {g.s1.q1}
+              <em>{g.s1.evidenceLayer}</em>{g.s1.q2}
+              <strong className="text-white">{g.s1.graphEngine}</strong>
+              {g.s1.q3}
+              <strong className="text-white">{g.s1.riskEngine}</strong>
+              {g.s1.q4}
             </div>
           </motion.section>
 
@@ -90,11 +92,10 @@ export default function TrustGraphPage() {
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-white border-b-2 border-ocean pb-2 mb-6">
-              II. System Architecture (5 Core Layers Model)
+              {g.s2.title}
             </h2>
             <p className="text-white/60 mb-6 leading-relaxed">
-              The new architecture is built around two AI cores, processing data
-              across 5 distinct layers:
+              {g.s2.intro}
             </p>
 
             {/* Layer 1 */}
@@ -103,28 +104,23 @@ export default function TrustGraphPage() {
                 1
               </div>
               <h3 className="text-lg font-bold text-white mb-2">
-                Layer 1: Human Oracle Input Layer
+                {g.s2.l1.heading}
               </h3>
               <p className="text-white/50 mb-2 leading-relaxed">
-                The entry point for real-world data, including physical and
-                logical checkpoints:
+                {g.s2.l1.intro}
               </p>
               <ul className="list-disc list-inside space-y-1 text-white/60 ml-2 leading-relaxed">
                 <li>
-                  <strong className="text-white">Proof of Action:</strong> Users
-                  must upload media (photos/videos of feed packaging, water test
-                  results) with embedded metadata (GPS, Timestamp) instead of
-                  just entering text.
+                  <strong className="text-white">{g.s2.l1.poaLabel}</strong>
+                  {g.s2.l1.poa}
                 </li>
                 <li>
-                  <strong className="text-white">Rule-based Validation:</strong>{" "}
-                  Automatically scans for basic logical errors (incorrect yield
-                  inputs, manipulation speed violations, duplicate IDs).
+                  <strong className="text-white">{g.s2.l1.ruleLabel}</strong>
+                  {g.s2.l1.rule}
                 </li>
                 <li>
-                  <strong className="text-white">DAG Topological Check:</strong>{" "}
-                  Ensures batches strictly follow the Directed Acyclic Graph
-                  (DAG) sequence, prohibiting any illegal bypasses.
+                  <strong className="text-white">{g.s2.l1.dagLabel}</strong>
+                  {g.s2.l1.dag}
                 </li>
               </ul>
             </div>
@@ -135,37 +131,29 @@ export default function TrustGraphPage() {
                 2
               </div>
               <h3 className="text-lg font-bold text-ocean mb-2">
-                [CORE 1] Network Graph Analytics Engine
+                {g.s2.l2.heading}
               </h3>
               <p className="text-white/50 mb-2 leading-relaxed">
-                Data is pushed into a Graph Database (e.g., Neo4j). This acts as
-                the &quot;Eye&quot; of the system, utilizing Graph Neural Networks (GNN) to
-                scan for micro and macro fraud behaviors:
+                {g.s2.l2.intro}
               </p>
               <ul className="list-disc list-inside space-y-2 text-white/60 ml-2 leading-relaxed">
                 <li>
                   <span className="text-amber-400 font-semibold">
-                    Collusion Clique Detection:
-                  </span>{" "}
-                  Utilizes <em>Louvain / Watts-Strogatz</em> algorithms to
-                  identify closed node clusters (farmers/officials) continuously
-                  cross-verifying each other to form isolated factions.
+                    {g.s2.l2.collusionLabel}
+                  </span>
+                  {g.s2.l2.collusion}
                 </li>
                 <li>
                   <span className="text-amber-400 font-semibold">
-                    Pair-Risk Evaluation:
-                  </span>{" "}
-                  Uses the <em>Adamic-Adar</em> index to monitor
-                  &quot;Submitter/Approver&quot; pairs. An overly high ratio of
-                  internal transactions triggers a red flag.
+                    {g.s2.l2.pairLabel}
+                  </span>
+                  {g.s2.l2.pair}
                 </li>
                 <li>
                   <span className="text-amber-400 font-semibold">
-                    Link Prediction:
-                  </span>{" "}
-                  The GNN model proactively predicts an account&apos;s fraud risk
-                  based on its positional shift within the network, even before a
-                  violation occurs.
+                    {g.s2.l2.linkLabel}
+                  </span>
+                  {g.s2.l2.link}
                 </li>
               </ul>
             </div>
@@ -176,38 +164,33 @@ export default function TrustGraphPage() {
                 3
               </div>
               <h3 className="text-lg font-bold text-purple-400 mb-2">
-                [CORE 2] Dynamic AI Risk Engine
+                {g.s2.l3.heading}
               </h3>
               <p className="text-white/50 mb-2 leading-relaxed">
-                This is the &quot;Brain&quot; delivering the final verdict. Replacing
-                simple linear formulas, the system deploys Non-linear Machine
-                Learning algorithms (such as XGBoost or Random Forest) to
-                calculate:
+                {g.s2.l3.intro}
               </p>
               <ul className="list-disc list-inside space-y-2 text-white/60 ml-2 leading-relaxed">
                 <li>
-                  <strong className="text-white">Contextual Adaptive Weights:</strong>{" "}
-                  The ML model self-adjusts risk levels based on time (disease
-                  seasons), geographical location, and batch nature.
+                  <strong className="text-white">{g.s2.l3.weightsLabel}</strong>
+                  {g.s2.l3.weights}
                 </li>
                 <li>
                   <strong className="text-white">
-                    Risk Score (<Math>R<sub>i</sub></Math>):
+                    {g.s2.l3.riskLabel}<Math>R<sub>i</sub></Math>{g.s2.l3.riskSuffix}
                   </strong>{" "}
-                  The metric evaluating the toxicity/fraud probability of a batch.
+                  {g.s2.l3.riskDesc}
                 </li>
                 <li>
                   <strong className="text-white">
-                    Trust Score (<Math>T<sub>i</sub></Math>):
+                    {g.s2.l3.trustLabel}<Math>T<sub>i</sub></Math>{g.s2.l3.trustSuffix}
                   </strong>{" "}
-                  A Beta Reputation System evaluating accumulated individual
-                  trustworthiness.
+                  {g.s2.l3.trustDesc}
                 </li>
                 <li>
-                  <strong className="text-white">Kill-switch Mechanism:</strong>{" "}
-                  Bypasses all past reputation, instigating an immediate
-                  rejection (<Math>R<sub>i</sub> = MAX</Math>) if critical errors
-                  (e.g., banned antibiotic residue) are detected.
+                  <strong className="text-white">{g.s2.l3.killLabel}</strong>{" "}
+                  {g.s2.l3.killDesc1}
+                  <Math>R<sub>i</sub> = MAX</Math>
+                  {g.s2.l3.killDesc2}
                 </li>
               </ul>
             </div>
@@ -218,41 +201,35 @@ export default function TrustGraphPage() {
                 4
               </div>
               <h3 className="text-lg font-bold text-white mb-2">
-                Layer 4: Execution & Consensus Layer
+                {g.s2.l4.heading}
               </h3>
               <p className="text-white/50 mb-3 leading-relaxed">
-                Based on Graph and Risk AI outputs, Smart Contracts automatically
-                route the workflow:
+                {g.s2.l4.intro}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="bg-emerald-500/5 border border-emerald-500/20 p-3 rounded-lg">
                   <div className="font-bold text-emerald-400 mb-1 text-sm">
-                    Green Zone (Auto-Approve)
+                    {g.s2.l4.greenTitle}
                   </div>
                   <div className="text-xs text-white/50 leading-relaxed">
-                    Low <Math>R<sub>i</sub></Math>, valid DAG &rarr; Approved,{" "}
-                    <Math>T<sub>i</sub></Math> added to Validator, recorded on
-                    Blockchain.
+                    {g.s2.l4.greenD1}<Math>R<sub>i</sub></Math>{g.s2.l4.greenD2}
+                    <Math>T<sub>i</sub></Math>{g.s2.l4.greenD3}
                   </div>
                 </div>
                 <div className="bg-amber-500/5 border border-amber-500/20 p-3 rounded-lg">
                   <div className="font-bold text-amber-400 mb-1 text-sm">
-                    Yellow Zone (Pending)
+                    {g.s2.l4.yellowTitle}
                   </div>
                   <div className="text-xs text-white/50 leading-relaxed">
-                    Suspicious <Math>R<sub>i</sub></Math> &rarr; Held. Dispatches
-                    1-2 random, graph-distant Validators for a Cross-check /
-                    Random Audit.
+                    {g.s2.l4.yellowD1}<Math>R<sub>i</sub></Math>{g.s2.l4.yellowD2}
                   </div>
                 </div>
                 <div className="bg-red-500/5 border border-red-500/20 p-3 rounded-lg">
                   <div className="font-bold text-red-400 mb-1 text-sm">
-                    Red Zone (Reject/Slashing)
+                    {g.s2.l4.redTitle}
                   </div>
                   <div className="text-xs text-white/50 leading-relaxed">
-                    Critical error / Collusion &rarr; Transaction cancelled,
-                    severe <Math>T<sub>i</sub></Math> deduction, and stake
-                    slashed.
+                    {g.s2.l4.redD1}<Math>T<sub>i</sub></Math>{g.s2.l4.redD2}
                   </div>
                 </div>
               </div>
@@ -264,18 +241,15 @@ export default function TrustGraphPage() {
                 5
               </div>
               <h3 className="text-lg font-bold text-white mb-2">
-                Layer 5: Decentralized Storage & Oracle Ecosystem
+                {g.s2.l5.heading}
               </h3>
               <ul className="list-disc list-inside space-y-1 text-white/60 ml-2 leading-relaxed">
                 <li>
-                  Only clean data that passes Layer 4 (along with Evidence Hash,
-                  Risk Score, and Trust Score) is permanently immutably written
-                  to the Blockchain.
+                  {g.s2.l5.li1}
                 </li>
                 <li>
-                  <strong className="text-white">Oracle API Provision:</strong>{" "}
-                  Opens APIs allowing external systems to query verified trust
-                  data.
+                  <strong className="text-white">{g.s2.l5.oracleLabel}</strong>
+                  {g.s2.l5.li2}
                 </li>
               </ul>
             </div>
@@ -289,31 +263,26 @@ export default function TrustGraphPage() {
             className="mb-12"
           >
             <h2 className="text-2xl font-bold text-white border-b-2 border-ocean pb-2 mb-4">
-              III. Incentive Mechanism & Game Theory
+              {g.s3.title}
             </h2>
             <p className="text-white/60 mb-3 leading-relaxed">
-              The system implements Game Theory to naturally steer user behavior
-              toward honesty:
+              {g.s3.intro}
             </p>
             <div className="space-y-4">
               <div className="flex items-start">
                 <Gift className="w-5 h-5 text-emerald-400 mt-1 mr-3 flex-shrink-0" />
                 <div className="text-white/60 leading-relaxed">
-                  <strong className="text-white">Reputation Rewards:</strong>{" "}
-                  Farmers/Validators maintaining a high Trust Score (
-                  <Math>T<sub>i</sub></Math>) receive priority approval
-                  processing or earn token rewards during surprise cross-checks.
+                  <strong className="text-white">{g.s3.rewardsLabel}</strong>
+                  {g.s3.rewards1}
+                  <Math>T<sub>i</sub></Math>
+                  {g.s3.rewards2}
                 </div>
               </div>
               <div className="flex items-start">
                 <Gavel className="w-5 h-5 text-red-400 mt-1 mr-3 flex-shrink-0" />
                 <div className="text-white/60 leading-relaxed">
-                  <strong className="text-white">Slashing Penalties:</strong>{" "}
-                  Attempting to &quot;bribe&quot; verifiers becomes futile because the
-                  Graph Engine (Core 1) detects anomalous links, prompting the
-                  Risk Engine (Core 2) to impose heavy reputation penalties,
-                  eventually disabling the compromised account from platform
-                  operations.
+                  <strong className="text-white">{g.s3.slashLabel}</strong>
+                  {g.s3.slash}
                 </div>
               </div>
             </div>
@@ -326,11 +295,10 @@ export default function TrustGraphPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-2xl font-bold text-white border-b-2 border-ocean pb-2 mb-4">
-              IV. Commercial Value Unlocking (New Business Models)
+              {g.s4.title}
             </h2>
             <p className="text-white/60 mb-4 leading-relaxed">
-              With this architecture, the project transcends traditional SaaS for
-              a single seafood company, unlocking revenue from 2 core models:
+              {g.s4.intro}
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -340,20 +308,17 @@ export default function TrustGraphPage() {
                     <Network className="w-6 h-6" />
                   </div>
                   <h3 className="font-bold text-lg text-white">
-                    1. &quot;Trust Oracle API&quot; Model (B2B)
+                    {g.s4.b2b.title}
                   </h3>
                 </div>
                 <ul className="list-disc list-inside text-sm text-white/50 space-y-2 leading-relaxed">
                   <li>
-                    Packaging the system as a specialized Supply Chain Risk
-                    Oracle.
+                    {g.s4.b2b.li1}
                   </li>
                   <li>
-                    E-commerce platforms, supermarket chains, or international
-                    certifiers (e.g., ASC, GlobalGAP) can call your API to ask:{" "}
+                    {g.s4.b2b.li2a}
                     <em>
-                      &quot;What is the probability of documentation collusion risk for
-                      this shrimp batch?&quot;
+                      {g.s4.b2b.quote}
                     </em>
                   </li>
                 </ul>
@@ -365,23 +330,18 @@ export default function TrustGraphPage() {
                     <Wallet className="w-6 h-6" />
                   </div>
                   <h3 className="font-bold text-lg text-white">
-                    2. DeFi Agricultural Lending Model
+                    {g.s4.defi.title}
                   </h3>
                 </div>
                 <ul className="list-disc list-inside text-sm text-white/50 space-y-2 leading-relaxed">
                   <li>
-                    Integrating with Banks or Decentralized Finance (DeFi)
-                    protocols.
+                    {g.s4.defi.li1}
                   </li>
                   <li>
-                    Utilizing the Trust Score (<Math>T<sub>i</sub></Math>) and
-                    Farmer behavior graphs as a Decentralized Credit Score.
+                    {g.s4.defi.li2a}<Math>T<sub>i</sub></Math>{g.s4.defi.li2b}
                   </li>
                   <li>
-                    Banks can automatically approve uncollateralized loans for
-                    farmers showcasing transparent networks and maintaining Risk
-                    Scores strictly within the Green Zone for 10 consecutive
-                    harvests.
+                    {g.s4.defi.li3}
                   </li>
                 </ul>
               </div>

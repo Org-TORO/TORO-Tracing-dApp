@@ -4,15 +4,20 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
+import { useT } from "@/src/lib/i18n";
+import traceIndex from "@/src/data/traceIndex.json";
 
-export default function TracePage() {
+const DEMO_LOTS = Object.keys(traceIndex.lots).slice(0, 5);
+
+export default function ExplorerPage() {
+  const { t } = useT();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      router.push(`/trace/${searchQuery.trim()}`);
+      router.push(`/explorer/${searchQuery.trim()}`);
     }
   };
 
@@ -36,11 +41,14 @@ export default function TracePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-              TORO Product Explorer
+            <p className="font-mono-data text-xs tracking-[0.35em] uppercase text-ocean mb-6">
+              {t.trace.search.kicker}
+            </p>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-white mb-4 leading-[1.05]">
+              {t.trace.search.title}
             </h1>
             <p className="text-lg md:text-xl text-white/50 mb-12">
-              Trace your tuna from catch to can
+              {t.trace.search.subtitle}
             </p>
           </motion.div>
 
@@ -63,7 +71,7 @@ export default function TracePage() {
                 </button>
                 <input
                   type="text"
-                  placeholder="Nhập mã lô (ví dụ: TORO-01)"
+                  placeholder={t.trace.search.placeholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -73,6 +81,25 @@ export default function TracePage() {
                 />
               </div>
             </div>
+
+            {DEMO_LOTS.length > 0 && (
+              <div className="mt-8">
+                <p className="font-mono-data text-[11px] tracking-[0.25em] uppercase text-white/30 mb-3">
+                  {t.trace.search.demoLabel}
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {DEMO_LOTS.map((code) => (
+                    <button
+                      key={code}
+                      onClick={() => router.push(`/explorer/${code}`)}
+                      className="font-mono-data text-xs px-4 py-2 rounded-full border border-white/10 text-white/50 hover:text-white hover:border-ocean/50 hover:bg-ocean/10 transition-all"
+                    >
+                      {code}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>

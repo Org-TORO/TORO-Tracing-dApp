@@ -6,8 +6,8 @@ import {
   AlertTriangle,
   Loader2,
   Shield,
-  ShieldCheck,
 } from "lucide-react";
+import { useT } from "@/src/lib/i18n";
 
 const NODE_COLORS = {
   source: "#00bf63",
@@ -454,6 +454,8 @@ const GraphCanvas = ({ status, scanStage }: { status: string; scanStage: number 
 };
 
 export default function TrustGraphSimulator() {
+  const { t } = useT();
+  const sim = t.graph.sim;
   const [status, setStatus] = useState("NORMAL");
   const [scanStage, setScanStage] = useState(0);
   const [isScanning, setIsScanning] = useState(false);
@@ -526,8 +528,8 @@ export default function TrustGraphSimulator() {
   const statusConfig = {
     NORMAL: {
       label: "NORMAL",
-      title: "MẠNG LƯỚI AN TOÀN",
-      description: "GNN không phát hiện bất thường. Luồng dữ liệu ổn định.",
+      title: sim.status.normal.title,
+      description: sim.status.normal.description,
       risk: "12%",
       color: "text-emerald-300",
       badge: "text-emerald-400",
@@ -535,8 +537,8 @@ export default function TrustGraphSimulator() {
     },
     COLLUSION: {
       label: "COLLUSION",
-      title: "PHÁT HIỆN THÔNG ĐỒNG",
-      description: "Phát hiện cụm xác thực chéo bất thường. Cần kiểm tra nguồn.",
+      title: sim.status.collusion.title,
+      description: sim.status.collusion.description,
       risk: "78%",
       color: "text-amber-300",
       badge: "text-amber-400",
@@ -544,8 +546,8 @@ export default function TrustGraphSimulator() {
     },
     ANOMALY: {
       label: "ANOMALY",
-      title: "DỊ THƯỜNG LOGIC",
-      description: "Hành vi lệch chuẩn với pattern giao dịch đột biến.",
+      title: sim.status.anomaly.title,
+      description: sim.status.anomaly.description,
       risk: "97%",
       color: "text-red-300",
       badge: "text-red-400",
@@ -557,11 +559,11 @@ export default function TrustGraphSimulator() {
 
   const stageNote = useMemo(() => {
     if (!isScanning || scanStage >= 3) return null;
-    if (scanStage === 0) return "Khởi tạo pipeline, trích xuất đặc trưng đồ thị...";
-    if (scanStage === 1) return "Stage 1/3: Giảm nhiễu (lọc node/edge không quan trọng).";
-    if (scanStage === 2) return "Stage 2/3: Cô lập cụm thông đồng & điểm dị thường (tăng cường tín hiệu).";
+    if (scanStage === 0) return sim.noteInit;
+    if (scanStage === 1) return sim.note1;
+    if (scanStage === 2) return sim.note2;
     return null;
-  }, [isScanning, scanStage]);
+  }, [isScanning, scanStage, sim]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -580,7 +582,7 @@ export default function TrustGraphSimulator() {
               TORO GRAPH 2.0
             </h2>
             <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400 font-mono mt-0.5">
-              Trust Network Simulator
+              {sim.subtitle}
             </p>
           </div>
         </div>
@@ -588,15 +590,15 @@ export default function TrustGraphSimulator() {
         {/* Legend overlay */}
         <div className="absolute bottom-4 left-4 z-10">
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3">
-            <h3 className="text-xs uppercase tracking-widest text-slate-300 mb-2">Nodes</h3>
+            <h3 className="text-xs uppercase tracking-widest text-slate-300 mb-2">{sim.legendTitle}</h3>
             <div className="space-y-2 text-xs">
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#00bf63] shadow-[0_0_8px_rgba(0,191,99,0.6)]" />
-                <span className="text-slate-200">Source Node</span>
+                <span className="text-slate-200">{sim.legendSource}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#3e96cc] shadow-[0_0_8px_rgba(62,150,204,0.6)]" />
-                <span className="text-slate-200">Station Node</span>
+                <span className="text-slate-200">{sim.legendStation}</span>
               </div>
             </div>
           </div>
@@ -607,11 +609,11 @@ export default function TrustGraphSimulator() {
       <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl px-5 py-4">
         <div className="flex items-start justify-between gap-4 flex-col sm:flex-row">
           <div>
-            <h3 className="text-sm uppercase tracking-widest text-slate-300">Control Panel</h3>
-            <p className="text-xs text-slate-500">Chọn mô phỏng trạng thái mạng lưới</p>
+            <h3 className="text-sm uppercase tracking-widest text-slate-300">{sim.controlsTitle}</h3>
+            <p className="text-xs text-slate-500">{sim.controlsSubtitle}</p>
             <div className="mt-3 flex items-center gap-2 text-xs text-slate-400">
               <Shield size={14} className={activeStatus.badge} />
-              <span className="uppercase tracking-widest">Trạng Thái: {activeStatus.label}</span>
+              <span className="uppercase tracking-widest">{sim.statusPrefix}{activeStatus.label}</span>
             </div>
           </div>
           <div className="flex gap-3 flex-col sm:flex-row w-full sm:w-auto">
@@ -623,7 +625,7 @@ export default function TrustGraphSimulator() {
                   : "border border-[#00bf63]/50 text-[#00bf63] hover:bg-[#00bf63]/10"
               }`}
             >
-              <ShieldCheck size={18} /> Luồng Chuẩn
+              {sim.btnNormal}
             </button>
             <button
               onClick={handleCollusion}
@@ -633,7 +635,7 @@ export default function TrustGraphSimulator() {
                   : "border border-[#ffc354]/50 text-[#ffc354] hover:bg-[#ffc354]/10"
               }`}
             >
-              <Activity size={18} /> Thông Đồng
+              <Activity size={18} /> {sim.btnCollusion}
             </button>
             <button
               onClick={handleAnomaly}
@@ -643,7 +645,7 @@ export default function TrustGraphSimulator() {
                   : "border border-red-400/50 text-red-300 hover:bg-red-400/10"
               }`}
             >
-              <AlertTriangle size={18} /> Dị Thường
+              <AlertTriangle size={18} /> {sim.btnAnomaly}
             </button>
           </div>
         </div>
@@ -654,7 +656,7 @@ export default function TrustGraphSimulator() {
         {scanStage < 3 ? (
           <>
             <div className={`flex items-center gap-2 text-sm font-semibold ${activeStatus.badge}`}>
-              <Shield size={18} /> Trạng Thái: {activeStatus.label}
+              <Shield size={18} /> {sim.statusPrefix}{activeStatus.label}
             </div>
             <h2 className={`mt-3 text-xl font-semibold tracking-widest ${activeStatus.color}`}>
               {activeStatus.title}
@@ -667,7 +669,7 @@ export default function TrustGraphSimulator() {
               {stageNote ?? activeStatus.description}
             </p>
             <div className="mt-4">
-              <span className="text-xs uppercase text-slate-500">Risk Score</span>
+              <span className="text-xs uppercase text-slate-500">{sim.riskLabel}</span>
               <div className={`text-3xl font-bold ${activeStatus.badge}`}>
                 {isScanning ? "12%" : activeStatus.risk}
               </div>
@@ -680,26 +682,26 @@ export default function TrustGraphSimulator() {
             >
               {isScanning ? (
                 <span className="inline-flex items-center justify-center gap-2">
-                  <Loader2 size={16} className="animate-spin" /> Đang trích xuất đặc trưng...
+                  <Loader2 size={16} className="animate-spin" /> {sim.running}
                 </span>
               ) : (
-                "Chạy Thuật Toán"
+                sim.run
               )}
             </button>
           </>
         ) : (
           <>
             <div className="flex items-center gap-2 text-sm font-semibold text-red-400">
-              <AlertTriangle size={18} /> Trạng Thái: CRITICAL
+              <AlertTriangle size={18} /> {sim.statusPrefix}CRITICAL
             </div>
             <h2 className="mt-3 text-xl font-semibold tracking-widest text-red-300" style={{ textShadow: "0 0 20px rgba(239,68,68,0.4)" }}>
-              PHÁT HIỆN RỦI RO NGHIÊM TRỌNG
+              {sim.criticalTitle}
             </h2>
             <div className="mt-4">
-              <span className="text-xs uppercase text-slate-500">Risk Score</span>
+              <span className="text-xs uppercase text-slate-500">{sim.riskLabel}</span>
               <div className="text-4xl font-bold text-red-400 tabular-nums">{riskScore}%</div>
               <div className="mt-2 text-xs text-slate-300">
-                Louvain: Cụm thông đồng khép kín. LOF: Sản lượng dị thường.
+                {sim.criticalDesc}
               </div>
             </div>
             <div className="flex gap-3 mt-4">
@@ -707,10 +709,10 @@ export default function TrustGraphSimulator() {
                 onClick={() => { setScanStage(0); setStatus("NORMAL"); setRiskScore(12); }}
                 className="flex-1 rounded-lg border border-white/20 bg-transparent py-2.5 text-sm font-semibold text-slate-200 hover:bg-white/10 transition"
               >
-                ↺ Quay lại
+                ↺ {sim.back}
               </button>
               <button className="flex-1 rounded-lg border border-red-400/60 bg-transparent py-2.5 text-sm font-semibold text-red-200 hover:bg-red-500/10 transition">
-                XEM BÁO CÁO CHI TIẾT
+                {sim.report}
               </button>
             </div>
           </>
