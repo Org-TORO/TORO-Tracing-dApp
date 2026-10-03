@@ -15,10 +15,32 @@ journeys" disclaimer. EN + VI strings in `src/locales/trace.ts`
 (`detail.unverified`); phone-sheet layout matches the verified passport.
 Buttons: Back to Explorer, Try demo lot TORO-01.
 
-**Verified:** `npx tsc --noEmit` clean; `npm run build` green (11 pages).
+**Fix 2 — dropped `output: "export"` from `ui/next.config.ts`:** static
+export can only render the 5 IDs in `generateStaticParams()`, so unknown
+scans threw `missing param ... in generateStaticParams()` before ever
+reaching the warning. Without it, known lots still pre-render (SSG) and
+unknown codes render on demand (`dynamicParams = true` on `[id]/page`).
+`distDir: "dist"` kept. Vercel serves this hybrid mode natively.
 
-**Note:** with static export, unknown IDs work via client-side nav from
-`/explorer` search; a hard refresh on static hosting still 404s (pre-existing).
+**Restyle (session 8):** first version looked like generic SaaS (centered
+pastel badge, amber box, numbered pills, stacked buttons). Rebuilt in the
+landing's voice: dark deep-ocean sheet, ghost ∅ numeral, gold mono kicker
+(`Unverified scan · No on-chain record`), Fraunces light headline, mono
+ledger rows (scanned code / ○ no record), ghost-numeral step rows, quiet
+growing-underline CTAs. No boxes, no badges. New locale keys
+`statusLabel` / `noRecord` (en+vi).
+
+**Balance pass (session 8):** page read too dark-blue, so the ledger block
+became one crisp white slip (scanned code + ○ no-record in deep navy on
+white, ghost ∅ watermark) with a rotated outlined red `UNVERIFIED` /
+`Chưa xác thực` void stamp (`voidStamp` key, en+vi). Everything else stays
+dark editorial. Later: dropped the `Try demo lot TORO-01` CTA (and its
+locale keys); only `Back to Explorer` remains.
+
+**Verified:** `npx tsc --noEmit` clean; `npm run build` green;
+`next start` serves both `/explorer/TORO-01` and `/explorer/TORO-xyz`
+with HTTP 200, warning strings present in the client chunk, zero
+missing-param errors in the server log.
 
 ## 2026-09-30 — Re-applied broken hero 3D can fix (session 6)
 

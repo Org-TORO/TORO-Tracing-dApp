@@ -97,7 +97,6 @@ export default function TraceDetailClient() {
         {/* ambient ocean glow behind the phone sheet */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden hidden sm:block">
           <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[640px] h-[640px] bg-ocean/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gold/[0.06] rounded-full blur-3xl" />
         </div>
         <div className="relative sm:max-w-[540px] sm:mx-auto sm:rounded-[32px] sm:overflow-hidden sm:border sm:border-white/10 sm:shadow-[0_0_90px_rgba(62,150,204,0.18)] min-h-screen sm:min-h-0 bg-[#0a1628]">
           {/* Header */}
@@ -111,62 +110,82 @@ export default function TraceDetailClient() {
             </div>
           </div>
 
-          {/* Light content area */}
-          <div className="bg-[#e9eef5] px-4 pb-12 pt-8">
-            <div className="bg-white rounded-[28px] p-6 sm:p-8 shadow-xl text-center">
-              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-2xl">
-                <i className="fa-solid fa-triangle-exclamation" />
-              </div>
-              <p className="text-amber-600 text-[11px] tracking-[2px] font-bold mb-2">
-                {uv.kicker}
-              </p>
-              <h1 className="text-[#0f172a] text-xl sm:text-2xl font-extrabold leading-snug mb-4">
-                {uv.title}
-              </h1>
-              <p className="text-slate-500 text-[11px] font-bold tracking-wide mb-1">
+          {/* Empty ledger: dark editorial, same voice as the landing chapters */}
+          <div className="relative px-6 sm:px-8 pt-14 pb-12 overflow-hidden">
+            <span
+              aria-hidden
+              className="font-display italic text-[7rem] leading-none text-white/[0.04] absolute top-4 right-2 select-none"
+            >
+              ∅
+            </span>
+
+            <p className="relative font-mono-data text-xs tracking-[0.35em] uppercase text-gold mb-5">
+              {uv.kicker}
+            </p>
+            <h1 className="relative font-display text-4xl sm:text-[2.75rem] font-light text-white leading-[1.05] mb-10">
+              {uv.title}
+            </h1>
+
+            {/* white ledger slip: the one light element on the page,
+                stamped void like a failed passport check */}
+            <div className="relative bg-white rounded-2xl px-6 py-6 mb-8 overflow-hidden">
+              <span
+                aria-hidden
+                className="font-display italic text-[5rem] leading-none text-[#0f172a]/[0.05] absolute -top-3 right-1 select-none"
+              >
+                ∅
+              </span>
+              <span className="absolute top-5 right-5 -rotate-6 font-mono-data text-[10px] tracking-[0.25em] uppercase text-red-800/70 border-2 border-red-800/40 rounded-md px-2.5 py-1">
+                {uv.voidStamp}
+              </span>
+              <p className="text-[11px] font-mono-data tracking-[0.2em] uppercase text-slate-500 mb-1">
                 {uv.scannedCode}
               </p>
-              <p className="font-mono-data text-[#0f172a] text-lg font-bold break-words mb-4">
+              <p className="font-mono-data text-xl text-[#0f172a] break-words mb-4 pr-24">
                 {id}
               </p>
-              <p className="text-slate-600 text-sm leading-relaxed mb-6">
-                {uv.body(id)}
-              </p>
-
-              <div className="text-left bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6">
-                <p className="text-[#0f172a] text-sm font-extrabold mb-3">
-                  {uv.cautionTitle}
+              <div className="border-t border-slate-200 pt-3">
+                <p className="text-[11px] font-mono-data tracking-[0.2em] uppercase text-slate-500 mb-1">
+                  {uv.statusLabel}
                 </p>
-                <ul className="space-y-2.5">
-                  {uv.steps.map((step, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-slate-600 text-sm leading-relaxed">
-                      <span className="w-5 h-5 mt-0.5 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-[10px] font-bold flex-shrink-0">
-                        {i + 1}
-                      </span>
-                      {step}
-                    </li>
-                  ))}
-                </ul>
+                <p className="font-mono-data text-sm text-red-800/80">
+                  ○ {uv.noRecord}
+                </p>
               </div>
+            </div>
 
-              <p className="text-slate-400 text-[11px] leading-relaxed mb-6">
-                {uv.disclaimer}
-              </p>
+            <p className="relative text-white/55 leading-relaxed mb-10">
+              {uv.body(id)}
+            </p>
 
-              <div className="flex flex-col gap-3">
-                <a
-                  href="/explorer"
-                  className="w-full py-3 rounded-xl bg-[#0f2a5f] text-white text-sm font-bold hover:bg-[#0f2a5f]/90 transition-colors"
-                >
-                  {uv.backToExplorer}
-                </a>
-                <a
-                  href="/explorer/TORO-01"
-                  className="w-full py-3 rounded-xl bg-white text-[#0f2a5f] text-sm font-bold border border-slate-200 hover:border-[#0f2a5f]/40 transition-colors"
-                >
-                  {uv.tryDemo}
-                </a>
-              </div>
+            <p className="relative font-mono-data text-[11px] tracking-[0.25em] uppercase text-white/35 mb-2">
+              {uv.cautionTitle}
+            </p>
+            <div className="relative border-t border-white/10 mb-10">
+              {uv.steps.map((step, i) => (
+                <div key={i} className="flex gap-4 py-4 border-b border-white/[0.06]">
+                  <span className="font-display italic text-xl text-white/25 leading-none pt-0.5">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-white/60 text-sm leading-relaxed">
+                    {step}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <p className="relative font-mono-data text-[11px] text-white/30 leading-relaxed mb-10">
+              {uv.disclaimer}
+            </p>
+
+            <div className="relative flex flex-col items-start gap-4">
+              <a
+                href="/explorer"
+                className="group inline-flex items-center gap-2 text-sm font-mono-data text-white/60 hover:text-white transition-colors"
+              >
+                {uv.backToExplorer}
+                <span className="w-8 h-px bg-current group-hover:w-12 transition-all" />
+              </a>
             </div>
           </div>
         </div>

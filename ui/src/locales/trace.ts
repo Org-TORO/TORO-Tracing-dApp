@@ -14,9 +14,12 @@ export const en = {
       notFoundTitle: "Product not found",
       notFoundBody: (id: string) => `Batch code "${id}" does not exist.`,
       unverified: {
-        kicker: "Unverified scan",
+        kicker: "Unverified scan · No on-chain record",
         title: "This product is not verified by TORO",
         scannedCode: "Scanned code",
+        statusLabel: "Ledger status",
+        noRecord: "No record",
+        voidStamp: "Unverified",
         body: (id: string) =>
           `No on-chain record matches "${id}". This can may be counterfeit, mislabeled, or from a batch that was never registered.`,
         cautionTitle: "What to do",
@@ -28,7 +31,6 @@ export const en = {
         disclaimer:
           "TORO only vouches for products with a verifiable on-chain journey. TORO is not responsible for unverified products.",
         backToExplorer: "Back to Explorer",
-        tryDemo: "Try demo lot TORO-01",
       },
       heroEyebrow: "PRODUCT TRACEABILITY",
       heroTitle: ["EXPORTED TUNA", "FROM VIETNAM"],
@@ -111,9 +113,12 @@ export const vi: typeof en = {
       notFoundTitle: "Không tìm thấy sản phẩm",
       notFoundBody: (id: string) => `Mã lô "${id}" không tồn tại.`,
       unverified: {
-        kicker: "Lượt quét chưa xác thực",
+        kicker: "Lượt quét chưa xác thực · Không có hồ sơ on-chain",
         title: "Sản phẩm này chưa được TORO xác thực",
         scannedCode: "Mã đã quét",
+        statusLabel: "Trạng thái sổ cái",
+        noRecord: "Không có hồ sơ",
+        voidStamp: "Chưa xác thực",
         body: (id: string) =>
           `Không có hồ sơ on-chain nào khớp với "${id}". Lon này có thể là hàng giả, dán nhãn sai, hoặc thuộc lô chưa từng được đăng ký.`,
         cautionTitle: "Bạn nên làm gì",
@@ -125,7 +130,6 @@ export const vi: typeof en = {
         disclaimer:
           "TORO chỉ bảo chứng cho sản phẩm có hành trình on-chain kiểm chứng được. TORO không chịu trách nhiệm với sản phẩm chưa xác thực.",
         backToExplorer: "Về trang Explorer",
-        tryDemo: "Thử lô demo TORO-01",
       },
       heroEyebrow: "NGUỒN GỐC TRUY XUẤT",
       heroTitle: ["CÁ NGỪ XUẤT KHẨU", "CỦA VIỆT NAM"],
