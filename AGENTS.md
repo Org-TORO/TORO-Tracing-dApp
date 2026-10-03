@@ -28,7 +28,7 @@ docs/              Project memory: PROJECT-STATE.md, DECISIONS.md, PROGRESS.md
 ```bash
 # UI (from ui/)
 npm run dev                          # dev server
-npm run build                        # production build (distDir: see next.config.ts)
+npm run build                        # production build (output: .next, hybrid SSG + dynamic)
 npx tsx scripts/indexer-solana.ts    # rebuild src/data/traceIndex.json from devnet
 
 # Solana program (from contracts/solana — needs Anchor + Solana toolchain)

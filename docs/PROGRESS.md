@@ -37,6 +37,13 @@ white, ghost ∅ watermark) with a rotated outlined red `UNVERIFIED` /
 dark editorial. Later: dropped the `Try demo lot TORO-01` CTA (and its
 locale keys); only `Back to Explorer` remains.
 
+**Fix 3 — Vercel `routes-manifest.json` missing (session 9):** Vercel looks
+for `.next/routes-manifest.json`, but `next.config.ts` still had
+`distDir: "dist"` left over from the static-export days. Dropped the custom
+`distDir` (back to Next.js default `.next`), deleted the stale `ui/dist/`
+artifacts. If the Vercel project has a custom "Output Directory" set,
+clear it to the default. AGENTS.md build note updated.
+
 **Verified:** `npx tsc --noEmit` clean; `npm run build` green;
 `next start` serves both `/explorer/TORO-01` and `/explorer/TORO-xyz`
 with HTTP 200, warning strings present in the client chunk, zero
