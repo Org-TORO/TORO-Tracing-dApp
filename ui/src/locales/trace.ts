@@ -13,6 +13,23 @@ export const en = {
       back: "Back",
       notFoundTitle: "Product not found",
       notFoundBody: (id: string) => `Batch code "${id}" does not exist.`,
+      unverified: {
+        kicker: "Unverified scan",
+        title: "This product is not verified by TORO",
+        scannedCode: "Scanned code",
+        body: (id: string) =>
+          `No on-chain record matches "${id}". This can may be counterfeit, mislabeled, or from a batch that was never registered.`,
+        cautionTitle: "What to do",
+        steps: [
+          "Do not consume it as a verified TORO product.",
+          "Check the code with your local distributor or retailer.",
+          "If the code looks tampered with, report it to TORO.",
+        ],
+        disclaimer:
+          "TORO only vouches for products with a verifiable on-chain journey. TORO is not responsible for unverified products.",
+        backToExplorer: "Back to Explorer",
+        tryDemo: "Try demo lot TORO-01",
+      },
       heroEyebrow: "PRODUCT TRACEABILITY",
       heroTitle: ["EXPORTED TUNA", "FROM VIETNAM"],
       verified: "Verified product, traceable on the Blockchain",
@@ -93,6 +110,23 @@ export const vi: typeof en = {
       back: "Quay lại",
       notFoundTitle: "Không tìm thấy sản phẩm",
       notFoundBody: (id: string) => `Mã lô "${id}" không tồn tại.`,
+      unverified: {
+        kicker: "Lượt quét chưa xác thực",
+        title: "Sản phẩm này chưa được TORO xác thực",
+        scannedCode: "Mã đã quét",
+        body: (id: string) =>
+          `Không có hồ sơ on-chain nào khớp với "${id}". Lon này có thể là hàng giả, dán nhãn sai, hoặc thuộc lô chưa từng được đăng ký.`,
+        cautionTitle: "Bạn nên làm gì",
+        steps: [
+          "Đừng sử dụng như sản phẩm TORO đã xác thực.",
+          "Đối chiếu mã với nhà phân phối hoặc cửa hàng nơi bạn mua.",
+          "Nếu mã có dấu hiệu bị tẩy xóa, hãy báo cho TORO.",
+        ],
+        disclaimer:
+          "TORO chỉ bảo chứng cho sản phẩm có hành trình on-chain kiểm chứng được. TORO không chịu trách nhiệm với sản phẩm chưa xác thực.",
+        backToExplorer: "Về trang Explorer",
+        tryDemo: "Thử lô demo TORO-01",
+      },
       heroEyebrow: "NGUỒN GỐC TRUY XUẤT",
       heroTitle: ["CÁ NGỪ XUẤT KHẨU", "CỦA VIỆT NAM"],
       verified: "Sản phẩm được xác thực và có thể truy xuất trên Blockchain",

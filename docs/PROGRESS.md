@@ -4,6 +4,22 @@ Newest first. One entry per work session: what was done, verified, and what's
 next. **Update this at the end of every session** — it's the cheapest way for
 any agent (or human) to resume without re-reading the codebase.
 
+## 2026-09-30 — Unverified-product warning for unknown lots (session 7)
+
+**Done:** visiting `/explorer/TORO-xyz` (or any code missing from
+`traceIndex.json`) now renders a caution page instead of the bare
+"Product not found": amber warning card with the scanned code, what-to-do
+steps (don't trust it as TORO, check with local distributor/retailer,
+report tampering), plus a "TORO only vouches for verifiable on-chain
+journeys" disclaimer. EN + VI strings in `src/locales/trace.ts`
+(`detail.unverified`); phone-sheet layout matches the verified passport.
+Buttons: Back to Explorer, Try demo lot TORO-01.
+
+**Verified:** `npx tsc --noEmit` clean; `npm run build` green (11 pages).
+
+**Note:** with static export, unknown IDs work via client-side nav from
+`/explorer` search; a hard refresh on static hosting still 404s (pre-existing).
+
 ## 2026-09-30 — Re-applied broken hero 3D can fix (session 6)
 
 **Found:** session 5's fix never landed in the working tree —

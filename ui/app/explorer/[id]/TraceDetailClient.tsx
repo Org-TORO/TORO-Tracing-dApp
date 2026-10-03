@@ -91,10 +91,85 @@ export default function TraceDetailClient() {
   }
 
   if (!product) {
+    const uv = td.unverified;
     return (
-      <div className="min-h-screen bg-[#0a1628] flex flex-col items-center justify-center p-6">
-        <h1 className="text-xl font-bold text-white mb-2">{td.notFoundTitle}</h1>
-        <p className="text-white/60 text-sm">{td.notFoundBody(id)}</p>
+      <div className="relative min-h-screen bg-[#0a1628] sm:py-10">
+        {/* ambient ocean glow behind the phone sheet */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden hidden sm:block">
+          <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[640px] h-[640px] bg-ocean/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-gold/[0.06] rounded-full blur-3xl" />
+        </div>
+        <div className="relative sm:max-w-[540px] sm:mx-auto sm:rounded-[32px] sm:overflow-hidden sm:border sm:border-white/10 sm:shadow-[0_0_90px_rgba(62,150,204,0.18)] min-h-screen sm:min-h-0 bg-[#0a1628]">
+          {/* Header */}
+          <div className="sticky top-0 z-40 px-4 py-4 border-b border-white/[0.06] bg-[#0a1628]/80 backdrop-blur-md">
+            <div className="flex items-center justify-between">
+              <a href="/explorer" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors text-sm">
+                <i className="fa-solid fa-arrow-left" />
+                {td.back}
+              </a>
+              <span className="text-white/40 text-xs font-mono-data">{id}</span>
+            </div>
+          </div>
+
+          {/* Light content area */}
+          <div className="bg-[#e9eef5] px-4 pb-12 pt-8">
+            <div className="bg-white rounded-[28px] p-6 sm:p-8 shadow-xl text-center">
+              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-2xl">
+                <i className="fa-solid fa-triangle-exclamation" />
+              </div>
+              <p className="text-amber-600 text-[11px] tracking-[2px] font-bold mb-2">
+                {uv.kicker}
+              </p>
+              <h1 className="text-[#0f172a] text-xl sm:text-2xl font-extrabold leading-snug mb-4">
+                {uv.title}
+              </h1>
+              <p className="text-slate-500 text-[11px] font-bold tracking-wide mb-1">
+                {uv.scannedCode}
+              </p>
+              <p className="font-mono-data text-[#0f172a] text-lg font-bold break-words mb-4">
+                {id}
+              </p>
+              <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                {uv.body(id)}
+              </p>
+
+              <div className="text-left bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6">
+                <p className="text-[#0f172a] text-sm font-extrabold mb-3">
+                  {uv.cautionTitle}
+                </p>
+                <ul className="space-y-2.5">
+                  {uv.steps.map((step, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-slate-600 text-sm leading-relaxed">
+                      <span className="w-5 h-5 mt-0.5 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+                        {i + 1}
+                      </span>
+                      {step}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <p className="text-slate-400 text-[11px] leading-relaxed mb-6">
+                {uv.disclaimer}
+              </p>
+
+              <div className="flex flex-col gap-3">
+                <a
+                  href="/explorer"
+                  className="w-full py-3 rounded-xl bg-[#0f2a5f] text-white text-sm font-bold hover:bg-[#0f2a5f]/90 transition-colors"
+                >
+                  {uv.backToExplorer}
+                </a>
+                <a
+                  href="/explorer/TORO-01"
+                  className="w-full py-3 rounded-xl bg-white text-[#0f2a5f] text-sm font-bold border border-slate-200 hover:border-[#0f2a5f]/40 transition-colors"
+                >
+                  {uv.tryDemo}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
