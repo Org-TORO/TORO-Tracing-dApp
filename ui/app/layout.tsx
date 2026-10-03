@@ -17,10 +17,10 @@ export const metadata: Metadata = {
     siteName: "TORO",
     images: [
       {
-        url: "/tuna_on_can.png",
-        width: 1053,
-        height: 496,
-        alt: "TORO canned tuna, traced from ocean to shelf",
+        url: "/og-card.png",
+        width: 1200,
+        height: 630,
+        alt: "TORO — Every tuna can remembers the ocean",
       },
     ],
     locale: "en_US",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "TORO: Traceable Ocean Resource Origin",
     description:
       "Every tuna can remembers the ocean. Scan a TORO can and see its verified journey on Solana.",
-    images: ["/tuna_on_can.png"],
+    images: ["/og-card.png"],
   },
 };
 

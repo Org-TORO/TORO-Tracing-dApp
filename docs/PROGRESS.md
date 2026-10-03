@@ -44,6 +44,23 @@ for `.next/routes-manifest.json`, but `next.config.ts` still had
 artifacts. If the Vercel project has a custom "Output Directory" set,
 clear it to the default. AGENTS.md build note updated.
 
+## 2026-10-03 — Proper social unfurl card (session 10)
+
+**Problem:** pasting any TORO link on X unfurled the bare
+`tuna_on_can.png` product shot (also off-ratio at 1053×496 vs the 1.91:1
+crawlers want).
+
+**Fix:** new `ui/scripts/og-card.py` (pillow) composes `public/og-card.png`
+at 1200×630 in the landing's voice: `Dark_bg.png` hero art, ocean glow,
+mono kicker + gold rule, NewYork serif headline ("Every tuna can
+remembers the ocean."), tuna art right. `layout.tsx` OG + Twitter images
+now point at it with correct dimensions. Re-run the script to tweak.
+
+**Verified:** `tsc` clean, `build` green, prerendered HTML carries absolute
+`og:image` / `twitter:image` at 1200×630. NOTE: X caches cards aggressively,
+re-scrape via the X card validator after deploying, and repeat for
+`toro.com.vn` once the custom domain serves the new bundle.
+
 **Verified:** `npx tsc --noEmit` clean; `npm run build` green;
 `next start` serves both `/explorer/TORO-01` and `/explorer/TORO-xyz`
 with HTTP 200, warning strings present in the client chunk, zero
