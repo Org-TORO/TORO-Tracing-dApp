@@ -9,6 +9,7 @@ export const en = {
     reviewGraph: "Review Graph",
     contracts: "Contracts",
     startTracing: "Start Tracing",
+    contact: "Contact",
   },
   footer: {
     startTracing: "Start Tracing",
@@ -38,6 +39,7 @@ export const vi: typeof en = {
     reviewGraph: "Đồ thị tin cậy",
     contracts: "Hợp đồng",
     startTracing: "Truy xuất ngay",
+    contact: "Liên hệ",
   },
   footer: {
     startTracing: "Truy xuất ngay",

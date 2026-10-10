@@ -4,6 +4,42 @@ Newest first. One entry per work session: what was done, verified, and what's
 next. **Update this at the end of every session** — it's the cheapest way for
 any agent (or human) to resume without re-reading the codebase.
 
+## 2026-10-10 — Contact form with Resend partner emails (session 11)
+
+**Done:** new `/contact` page (EN/VI, dark editorial: name / email /
+company / message, idle → sending → success/error states) +
+`POST /api/contact` (`ui/app/api/contact/route.ts`): required-field and
+email-regex validation, then a styled HTML "Partner inquiry" email sent
+via Resend to the 3 team inboxes from `contact@toro.com.vn`. New locale
+file `src/locales/contact.ts` registered in `src/lib/i18n.tsx`; Navbar
+gained a Contact link (`nav.contact`, en+vi); the landing Expansion CTA
+now points at `/contact` instead of the crew's X profile. Added
+`resend@6.32.1`; `ui/.env` (holds `RESEND_API_KEY`) added to
+`.gitignore` — the key was never tracked.
+
+**Fix — silent false success:** the Resend SDK never throws on API
+errors, it returns `{ data, error }`. The original `await
+resend.emails.send()` inside try/catch therefore returned
+`{ success: true }` even when Resend rejected the send. The route now
+checks `error` → logs it and returns 502, and includes `data.id` on
+success.
+
+**Verified:** `npx tsc --noEmit` clean; `npm run build` green
+(`ƒ /api/contact`, `○ /contact`, 13 pages). Live route tests: `{}` → 400,
+bad email → 400, valid payload with an invalid key → 502 with no email
+sent. One real send through the route reported `last_event: delivered`
+to all 3 recipients (confirmed by the user). Account check:
+`toro.com.vn` is already `verified` in Resend (DKIM `resend._domainkey`
++ SPF CNAME `send` live in DNS), so `contact@toro.com.vn` sends for real.
+
+**Next:**
+- [ ] HTML-escape user input in the email template (template injection)
+- [ ] `reply_to` = submitter so the team can hit Reply
+- [ ] Rate limiting / honeypot on the public POST
+- [ ] Footer "Contact Us" column still `mailto:hello@toro.io` + `#`
+- [ ] Page `metadata` for `/contact` (client page needs a server layout)
+- [ ] Set `RESEND_API_KEY` in Vercel (user handling deployment)
+
 ## 2026-09-30 — Unverified-product warning for unknown lots (session 7)
 
 **Done:** visiting `/explorer/TORO-xyz` (or any code missing from

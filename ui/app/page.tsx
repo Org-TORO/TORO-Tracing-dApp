@@ -881,7 +881,7 @@ function Expansion() {
         </motion.div>
 
         <div className="text-center mt-10">
-          <StampButton href="https://x.com/Trx_Tra">{t.landing.expansion.cta}</StampButton>
+          <StampButton href="/contact">{t.landing.expansion.cta}</StampButton>
         </div>
       </div>
     </section>

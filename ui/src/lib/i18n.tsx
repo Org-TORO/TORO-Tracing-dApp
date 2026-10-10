@@ -18,11 +18,12 @@ import { en as navEn, vi as navVi } from "@/src/locales/nav";
 import { en as traceEn, vi as traceVi } from "@/src/locales/trace";
 import { en as graphEn, vi as graphVi } from "@/src/locales/graph";
 import { en as storyEn, vi as storyVi } from "@/src/locales/story";
+import { en as contactEn, vi as contactVi } from "@/src/locales/contact";
 
 export type Locale = "en" | "vi";
 
-const en = { ...landingEn, ...navEn, ...traceEn, ...graphEn, ...storyEn };
-const vi = { ...landingVi, ...navVi, ...traceVi, ...graphVi, ...storyVi };
+const en = { ...landingEn, ...navEn, ...traceEn, ...graphEn, ...storyEn, ...contactEn };
+const vi = { ...landingVi, ...navVi, ...traceVi, ...graphVi, ...storyVi, ...contactVi };
 
 export type Dict = typeof en;
 

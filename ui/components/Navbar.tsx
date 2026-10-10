@@ -90,6 +90,16 @@ export default function Navbar() {
           >
             {t.nav.reviewGraph}
           </Link>
+          <Link
+            href="/contact"
+            className={`transition-colors no-underline font-medium ${
+              pathname === "/contact"
+                ? "text-white"
+                : "text-white/50 hover:text-white"
+            }`}
+          >
+            {t.nav.contact}
+          </Link>
         </div>
 
         {/* Right CTAs */}
