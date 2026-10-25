@@ -18,7 +18,8 @@ ui/                Next.js 15 (App Router) marketing + traceability site
   scripts/indexer-solana.ts Crawls devnet events → regenerates traceIndex.json
 contracts/solana/  Anchor (Rust) program — port of the original EVM ToroRegistry
   programs/toro/src/  All on-chain code (~730 lines, fully documented)
-  scripts/seed.ts     Idempotent devnet seeder (TORO-01..TORO-05 demo traces)
+  scripts/seed.ts     Idempotent devnet seeder (demo traces: TORO-01..05 from
+                      2024 + TORO-06..10 October-2026 refresh wave)
   docs/toro-program.md  Authoritative on-chain reference — READ THIS FIRST
   data/CODE_REGISTRY.md Trace-data field codes (0x100..0x600)
 docs/              Project memory: PROJECT-STATE.md, DECISIONS.md, PROGRESS.md

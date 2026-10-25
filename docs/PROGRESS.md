@@ -4,6 +4,33 @@ Newest first. One entry per work session: what was done, verified, and what's
 next. **Update this at the end of every session** — it's the cheapest way for
 any agent (or human) to resume without re-reading the codebase.
 
+## 2026-10-25 — Fresh demo wave TORO-06..10 on devnet (session 12)
+
+**Problem:** the 5 explorer demo cans (TORO-01..05) were seeded with
+May–July 2024 story dates, so the explorer looked a year+ stale.
+
+**Done:**
+- `contracts/solana/scripts/seed.ts`: added a second wave of 5 traces
+  (TORO-06..10, batches WILD-CATCH-006/007/008/010, FARM-003/004) with
+  October 2026 story dates (catches Oct 2–12, arrivals through Oct 25).
+  Old TORO-01..05 left untouched; script stays idempotent per ID.
+- Seeded devnet (33 new txs, deployer `Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft`;
+  some 429 retries, all confirmed).
+- Re-ran the indexer: `traceIndex.json` now has 10 lots / 12 batches.
+- `ui/app/explorer/page.tsx`: demo-lot chips were `Object.keys(...).slice(0, 5)`,
+  which kept showing the oldest 5. Now picks the 5 lots with the latest
+  on-chain tx timestamp (batches' trace + lotTraces, packagingDate fallback),
+  so chips always feature the freshest cans.
+
+**Verified:** new lots confirmed on devnet (all txs 2026-10-25); index shows
+Oct 2026 catch dates for TORO-06..10; `tsc` clean; `npm run build` green
+(18 pages, all 10 lots prerendered at `/explorer/[id]`).
+
+**Next:**
+- [ ] Redeploy Vercel so the live site serves the new index + chip logic
+- [ ] If TORO-01..05 should retire from the index, they must be removed
+      on-chain (no delete instruction) or filtered in the indexer
+
 ## 2026-10-10 — Contact form with Resend partner emails (session 11)
 
 **Done:** new `/contact` page (EN/VI, dark editorial: name / email /

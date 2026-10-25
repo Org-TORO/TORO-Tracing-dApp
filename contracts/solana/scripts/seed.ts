@@ -1,7 +1,9 @@
 /**
  * Devnet seed script: ports the original EVM DeployAndDemo + SeedLot05 scripts.
- * Initializes the program, grants roles to the deployer, and records the 5 demo
- * traces (TORO-01..TORO-05) with the exact same code/value payloads as EVM.
+ * Initializes the program, grants roles to the deployer, and records the demo
+ * traces with the exact same code/value payloads as EVM. Two waves:
+ *   TORO-01..05 — original 2024-era demo traces
+ *   TORO-06..10 — October 2026 refresh wave (keeps the explorer looking recent)
  *
  * Usage: yarn seed   (from contracts/solana)
  */
@@ -293,6 +295,49 @@ async function main() {
   await createLot("TORO-05", ["WILD-CATCH-005"], 2900, lotData("cá ngừ đóng hộp", 1719273600));
   await recordLotStage("recordWarehouse", "TORO-05", warehouseData("TORO-Cold Storage 2", 1718841600, 1719532800, -2));
   await recordLotStage("recordDistribution", "TORO-05", distData("TORO-Shipping 2", 1719532800, 1719705600));
+
+  console.log("=== TRACE 6: WILD-CATCH-006 -> TORO-06 ===");
+  await mintBatch("WILD-CATCH-006", sourceData(1, 1, "Bình Định", 1790899200, 1, 1, 900));
+  await recordBatchStage("recordInventory", "WILD-CATCH-006", inventoryData(1791072000, 1));
+  await recordBatchStage("recordManufacturing", "WILD-CATCH-006", manufData("TORO-Seafood Processing 1", 1791504000, 1791676800, 2200, 4400, 60));
+  await createLot("TORO-06", ["WILD-CATCH-006"], 4400, lotData("cá ngừ đóng hộp", 1791763200));
+  await recordLotStage("recordWarehouse", "TORO-06", warehouseData("TORO-Cold Storage 1", 1791849600, 1791936000, 2));
+  await recordLotStage("recordDistribution", "TORO-06", distData("TORO-Shipping 1", 1792022400, 1792108800));
+
+  console.log("=== TRACE 7: WILD-CATCH-007 + FARM-003 -> TORO-07 ===");
+  await mintBatch("WILD-CATCH-007", sourceData(1, 1, "Phú Yên", 1790985600, 1, 1, 950));
+  await recordBatchStage("recordInventory", "WILD-CATCH-007", inventoryData(1791158400, 1));
+  await recordBatchStage("recordManufacturing", "WILD-CATCH-007", manufData("TORO-Seafood Processing 1", 1791590400, 1791763200, 2100, 4200, 55));
+  await mintBatch("FARM-003", sourceData(2, 1, "Khánh Hòa", 1791072000, 5, 1, 2600));
+  await recordBatchStage("recordInventory", "FARM-003", inventoryData(1791244800, 2));
+  await recordBatchStage("recordManufacturing", "FARM-003", manufData("TORO-Seafood Processing 2", 1791676800, 1791849600, 2500, 5000, 70));
+  await createLot("TORO-07", ["WILD-CATCH-007", "FARM-003"], 9200, lotData("cá ngừ đóng hộp", 1792022400));
+  await recordLotStage("recordWarehouse", "TORO-07", warehouseData("TORO-Cold Storage 2", 1792108800, 1792195200, 2));
+  await recordLotStage("recordDistribution", "TORO-07", distData("TORO-Shipping 2", 1792281600, 1792368000));
+
+  console.log("=== TRACE 8: FARM-004 -> TORO-08 ===");
+  await mintBatch("FARM-004", sourceData(2, 2, "Bình Định", 1791244800, 5, 2, 3200));
+  await recordBatchStage("recordInventory", "FARM-004", inventoryData(1791417600, 2));
+  await recordBatchStage("recordManufacturing", "FARM-004", manufData("TORO-Seafood Processing 3", 1791849600, 1792022400, 3100, 6200, 90));
+  await createLot("TORO-08", ["FARM-004"], 6200, lotData("cá ngừ đóng hộp", 1792195200));
+  await recordLotStage("recordWarehouse", "TORO-08", warehouseData("TORO-Cold Storage 3", 1792281600, 1792368000, 1));
+  await recordLotStage("recordDistribution", "TORO-08", distData("TORO-Shipping 3", 1792454400, 1792540800));
+
+  console.log("=== TRACE 9: WILD-CATCH-008 -> TORO-09 ===");
+  await mintBatch("WILD-CATCH-008", sourceData(1, 3, "Phú Yên", 1791417600, 2, 1, 1300));
+  await recordBatchStage("recordInventory", "WILD-CATCH-008", inventoryData(1791590400, 1));
+  await recordBatchStage("recordManufacturing", "WILD-CATCH-008", manufData("TORO-Seafood Processing 1", 1792022400, 1792195200, 1250, 2500, 42));
+  await createLot("TORO-09", ["WILD-CATCH-008"], 2500, lotData("cá ngừ", 1792368000));
+  await recordLotStage("recordWarehouse", "TORO-09", warehouseData("TORO-Cold Storage 1", 1792454400, 1792540800, 3));
+  await recordLotStage("recordDistribution", "TORO-09", distData("TORO-Shipping 1", 1792627200, 1792713600));
+
+  console.log("=== TRACE 10: WILD-CATCH-010 -> TORO-10 ===");
+  await mintBatch("WILD-CATCH-010", sourceData(1, 1, "Bình Định", 1791763200, 1, 1, 1600));
+  await recordBatchStage("recordInventory", "WILD-CATCH-010", inventoryData(1791936000, 1));
+  await recordBatchStage("recordManufacturing", "WILD-CATCH-010", manufData("TORO-Seafood Processing 1", 1792368000, 1792540800, 1550, 3100, 48));
+  await createLot("TORO-10", ["WILD-CATCH-010"], 3100, lotData("cá ngừ đóng hộp", 1792627200));
+  await recordLotStage("recordWarehouse", "TORO-10", warehouseData("TORO-Cold Storage 2", 1792713600, 1792800000, -2));
+  await recordLotStage("recordDistribution", "TORO-10", distData("TORO-Shipping 2", 1792800000, 1792886400));
 
   console.log("========================================");
   console.log("SEED COMPLETE");

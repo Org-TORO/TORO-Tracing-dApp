@@ -7,7 +7,25 @@ import { Search } from "lucide-react";
 import { useT } from "@/src/lib/i18n";
 import traceIndex from "@/src/data/traceIndex.json";
 
-const DEMO_LOTS = Object.keys(traceIndex.lots).slice(0, 5);
+type TraceEntry = { timestamp: number };
+type LotEntry = {
+  packagingDate?: number;
+  batches?: { trace?: TraceEntry[] }[];
+  lotTraces?: TraceEntry[];
+};
+
+/** The 5 most recently recorded demo lots (by latest on-chain tx timestamp). */
+const DEMO_LOTS = (Object.entries(traceIndex.lots) as [string, LotEntry][])
+  .map(([code, lot]) => {
+    const stamps = [
+      ...(lot.batches ?? []).flatMap((b) => b.trace ?? []),
+      ...(lot.lotTraces ?? []),
+    ].map((t) => t.timestamp);
+    return [code, stamps.length ? Math.max(...stamps) : (lot.packagingDate ?? 0)] as const;
+  })
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 5)
+  .map(([code]) => code);
 
 export default function ExplorerPage() {
   const { t } = useT();

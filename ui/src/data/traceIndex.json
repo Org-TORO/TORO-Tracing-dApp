@@ -502,6 +502,509 @@
           }
         }
       ]
+    },
+    "TORO-06": {
+      "lotCode": "TORO-06",
+      "totalCans": 4400,
+      "packagingDate": 1791763200,
+      "productLabel": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000005010000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000263c3a1206e67e1bbab20c491c3b36e672068e1bb997000000000000000000000000000000000000000000000000000000000000000000000000000006acc2300",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-006",
+          "batchHash": "0x57494c442d43415443482d303036000000000000000000000000000000000000",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "DLH7kk3G5u4EDPHndLFdmG6qjvVTnfhZvfG3JTQP7YA4pfFLdgGFqyvRHvTxPYWZ4Kqk7DQvyUzEezSGCX7rr1S",
+              "timestamp": 1792895917,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821884,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Yellowfin",
+                "Region": "Bình Định",
+                "Catch Date": "2/10/2026",
+                "Fishing Method": "Longline",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "900",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "9kpViBzvoiBRbAedqE3XSacExEfUF23CADr66g1UKFCGeweLuSqFmsTiEpffJVSM3CYYy72JJnWdqYjNotLrVQe",
+              "timestamp": 1792895926,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821925,
+              "details": {
+                "Inventory Received": "4/10/2026",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "4i8LfnjQK7BNu9wH94iTmYN9XdMUf1H1kPeUkpQHUtffrtWyMPx8Zb2cg9yNDtn7U7Nt5bJy1rP2fvgLEkj5iuaL",
+              "timestamp": 1792895928,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821930,
+              "details": {
+                "Factory Name": "TORO-Seafood Processing 1",
+                "Production Date": "9/10/2026",
+                "Packaging Date": "11/10/2026",
+                "Input Weight (kg)": "2,200",
+                "Output Cans": "4,400",
+                "Wastage (kg)": "60"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "4rpLN8EkXpsE4aQc9iCTXmAwWJ2UaoZ2W3eJ2aMVe9VYkD9iVMovMa3BLR4MeMJmfE5LqtXtRbujhSYmwJTRwpE9",
+          "timestamp": 1792895931,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514821943,
+          "details": {
+            "Warehouse Name": "TORO-Cold Storage 1",
+            "Storage Start": "13/10/2026",
+            "Storage End": "14/10/2026",
+            "Storage Temp (°C)": 2
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "3j6Qs8FXuRF1HnvA6ZcJ4kEWRLM3hEANwYjVbv9Jk8U2gFb5VKLfYz37B5nFUHxKxuDkGyUNJwTJdm8gXTaGbJ6U",
+          "timestamp": 1792895932,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514821949,
+          "details": {
+            "Shipment Code": "TORO-Shipping 1",
+            "Departure Date": "15/10/2026",
+            "Arrival Date": "16/10/2026"
+          }
+        }
+      ]
+    },
+    "TORO-07": {
+      "lotCode": "TORO-07",
+      "totalCans": 9200,
+      "packagingDate": 1792022400,
+      "productLabel": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000005010000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000263c3a1206e67e1bbab20c491c3b36e672068e1bb997000000000000000000000000000000000000000000000000000000000000000000000000000006ad01780",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-007",
+          "batchHash": "0x57494c442d43415443482d303037000000000000000000000000000000000000",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "48n9TCXTRCvtjCDyKhBSM4BoKsinBhaCM7cEczD87GDNcLDfrQXWjRZGUTNJUjyirBSrFiEaSpzkJXsuXmb62rwp",
+              "timestamp": 1792895934,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821955,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Yellowfin",
+                "Region": "Phú Yên",
+                "Catch Date": "3/10/2026",
+                "Fishing Method": "Longline",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "950",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "3G6BUGWpydu8HSVQXcNR6TUayn2pZfkr6JYxmWV4WEwiAXrzX8u9iVcrMzLH6d8LUqB112ZDCvSWy21UnLLXE5Br",
+              "timestamp": 1792895935,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821960,
+              "details": {
+                "Inventory Received": "5/10/2026",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "8AjBdWqfp2o78bPDTiqT3ERzea3yG1U6QLLKnkTUtDeqFXQpyEWjopGLiNuf2PQVeRpbaKdUJZQYqeUpkV9TuLT",
+              "timestamp": 1792895936,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821966,
+              "details": {
+                "Factory Name": "TORO-Seafood Processing 1",
+                "Production Date": "10/10/2026",
+                "Packaging Date": "12/10/2026",
+                "Input Weight (kg)": "2,100",
+                "Output Cans": "4,200",
+                "Wastage (kg)": "55"
+              }
+            }
+          ]
+        },
+        {
+          "batchId": "FARM-003",
+          "batchHash": "0x4641524d2d303033000000000000000000000000000000000000000000000000",
+          "sourceType": "Farm",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "5157yziLoMHFcq7fMz4scXdqcoMMSACJEcEtxvE2AwsXrDmK5s7j9CEY1KoWa3MVb8EFk4k5vo1SMzBTYjWtGyVe",
+              "timestamp": 1792895938,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821972,
+              "details": {
+                "Source Type": "Farm",
+                "Fish Species": "Yellowfin",
+                "Region": "Khánh Hòa",
+                "Catch Date": "4/10/2026",
+                "Fishing Method": "Aquaculture",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "2,600",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "jhB4nRo799W5zrDwpczBwPUN8aJTxkLVSd5cifoXtJQ6XJPE2MKMfGeUveGKXyYSXAcaNkkpoaGj6vcL3wKqoYc",
+              "timestamp": 1792895939,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821978,
+              "details": {
+                "Inventory Received": "6/10/2026",
+                "Inventory Location": "Farm Holding Tank"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "rBJKFgUpi1VTmyueYPLgCyvkQzrT48skkkU3tdu2MtHUi2jtdHi72X66WTP1SKDdCcjZKm6PeuCcwmvVqNK3Cz2",
+              "timestamp": 1792895941,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514821984,
+              "details": {
+                "Factory Name": "TORO-Seafood Processing 2",
+                "Production Date": "11/10/2026",
+                "Packaging Date": "13/10/2026",
+                "Input Weight (kg)": "2,500",
+                "Output Cans": "5,000",
+                "Wastage (kg)": "70"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "5cqLjUESy9ShZP1c8rxV9NEaZNRyXye1odaZUTGTiGVGzHiS9gsCER7vaYrsYoLrduhZK7dJMyAcyQVkmkYn9ACG",
+          "timestamp": 1792895944,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514821997,
+          "details": {
+            "Warehouse Name": "TORO-Cold Storage 2",
+            "Storage Start": "16/10/2026",
+            "Storage End": "17/10/2026",
+            "Storage Temp (°C)": 2
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "2E9NYJwfhP5nSarXdpHcMtyDCxXbQDJSskt8Z1yZnbLG3hJJ5DUX1zZeRnP5r29RdfsAWmyTWLqejcUE33oE7D2e",
+          "timestamp": 1792895945,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514822004,
+          "details": {
+            "Shipment Code": "TORO-Shipping 2",
+            "Departure Date": "18/10/2026",
+            "Arrival Date": "19/10/2026"
+          }
+        }
+      ]
+    },
+    "TORO-08": {
+      "lotCode": "TORO-08",
+      "totalCans": 6200,
+      "packagingDate": 1792195200,
+      "productLabel": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000005010000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000263c3a1206e67e1bbab20c491c3b36e672068e1bb997000000000000000000000000000000000000000000000000000000000000000000000000000006ad2ba80",
+      "batches": [
+        {
+          "batchId": "FARM-004",
+          "batchHash": "0x4641524d2d303034000000000000000000000000000000000000000000000000",
+          "sourceType": "Farm",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "2UfoBG6nVdE4BQKXG5KXQ8PCp19JscHWRrUVhTS8G3KAUkLBtcajHYMY3z1DfLhKzDne1v1mCqJURiKit4Xh1Nsy",
+              "timestamp": 1792895947,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822010,
+              "details": {
+                "Source Type": "Farm",
+                "Fish Species": "Skipjack",
+                "Region": "Bình Định",
+                "Catch Date": "6/10/2026",
+                "Fishing Method": "Aquaculture",
+                "Catch Area": "Indian Ocean",
+                "Catch Weight (kg)": "3,200",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "2oACAvqPvKd5H3eAViPYPx5UScVxcMxMqgMaZa4PRjo3oaNtYGVkXJifkSHtsGJy3hxswQexSZ131Q1zC6Zu84aB",
+              "timestamp": 1792895948,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822016,
+              "details": {
+                "Inventory Received": "8/10/2026",
+                "Inventory Location": "Farm Holding Tank"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "4bWCTGTnUyi4kUEmHoy8ZPnwdgoW2sCAEjjEvjfKRav7evbAqPVNpjXpUYcSAAHPsug3SscqnVsiGGbSnesY7PTi",
+              "timestamp": 1792895950,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822023,
+              "details": {
+                "Factory Name": "TORO-Seafood Processing 3",
+                "Production Date": "13/10/2026",
+                "Packaging Date": "15/10/2026",
+                "Input Weight (kg)": "3,100",
+                "Output Cans": "6,200",
+                "Wastage (kg)": "90"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "2edwP7Cv7XSztTMomBwGu6xD3bbLYubVNgp7dHok8kAqAAd4Hx2VQxjNNZrefPtsMWQfm3xQD5dJzwdvxDahQcyr",
+          "timestamp": 1792895953,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514822035,
+          "details": {
+            "Warehouse Name": "TORO-Cold Storage 3",
+            "Storage Start": "18/10/2026",
+            "Storage End": "19/10/2026",
+            "Storage Temp (°C)": 1
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "5GrEVW9eptP5K3PE2Yjf7LvrugrSEvy6EBaZt1TEDrHMwsHM4zzywwX75MeCLWrE2eHJ64AeoZnzQC4DtVEmfUDy",
+          "timestamp": 1792895954,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514822040,
+          "details": {
+            "Shipment Code": "TORO-Shipping 3",
+            "Departure Date": "20/10/2026",
+            "Arrival Date": "21/10/2026"
+          }
+        }
+      ]
+    },
+    "TORO-09": {
+      "lotCode": "TORO-09",
+      "totalCans": 2500,
+      "packagingDate": 1792368000,
+      "productLabel": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000005010000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000263c3a1206e67e1bbab0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006ad55d80",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-008",
+          "batchHash": "0x57494c442d43415443482d303038000000000000000000000000000000000000",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "27YCkH7Mch8M1oABgrxbQjp2X1wR8a9iXCa55Ln62S2pPPX4HVt4ids2iAawC2TMqVZSkvWBsv9BooDMFxxXQ5yr",
+              "timestamp": 1792895955,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822045,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Bigeye",
+                "Region": "Phú Yên",
+                "Catch Date": "8/10/2026",
+                "Fishing Method": "Purse Seine",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "1,300",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "2DYm27KUxug6Cb4GtW3dEobFe5ASdGSAYsiShZjiN3NP4AEPMb8uG3PeRgwXiVi2nYDtRRTCHpcWswkwzdgi2bp3",
+              "timestamp": 1792895957,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822052,
+              "details": {
+                "Inventory Received": "10/10/2026",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "3BhQxd9FHmysjW8owMaWx4WpLteZmG1ALKwwr6dKtdPDqMTJW4wX25cePcBKuhPW2oi2qkUWBM5dwyqtudwa99pt",
+              "timestamp": 1792895959,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822059,
+              "details": {
+                "Factory Name": "TORO-Seafood Processing 1",
+                "Production Date": "15/10/2026",
+                "Packaging Date": "17/10/2026",
+                "Input Weight (kg)": "1,250",
+                "Output Cans": "2,500",
+                "Wastage (kg)": "42"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "3C7DnCMWXuixhBThwn2pxSvUNA5PUc9j8wEZJzfqhMcCsqxXG93eQmXbPdGwKWGPCpCmmj8wZw99q3KSV3TteN76",
+          "timestamp": 1792895961,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514822071,
+          "details": {
+            "Warehouse Name": "TORO-Cold Storage 1",
+            "Storage Start": "20/10/2026",
+            "Storage End": "21/10/2026",
+            "Storage Temp (°C)": 3
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "5sFVSGE1G6xyJmX2fKfAaSRLFbA8AyBG2PaBfmjz97krWnmnbS6XhdGid5XGcaaWMnnrXpS89SHxuja2kbsBwAGH",
+          "timestamp": 1792895963,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514822078,
+          "details": {
+            "Shipment Code": "TORO-Shipping 1",
+            "Departure Date": "22/10/2026",
+            "Arrival Date": "23/10/2026"
+          }
+        }
+      ]
+    },
+    "TORO-10": {
+      "lotCode": "TORO-10",
+      "totalCans": 3100,
+      "packagingDate": 1792627200,
+      "productLabel": "0x000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000005010000000000000000000000000000000000000000000000000000000000000504000000000000000000000000000000000000000000000000000000000000000263c3a1206e67e1bbab20c491c3b36e672068e1bb997000000000000000000000000000000000000000000000000000000000000000000000000000006ad95200",
+      "batches": [
+        {
+          "batchId": "WILD-CATCH-010",
+          "batchHash": "0x57494c442d43415443482d303130000000000000000000000000000000000000",
+          "sourceType": "Vessel",
+          "trace": [
+            {
+              "stage": 1,
+              "stageName": "Source",
+              "txHash": "27m8W6sZsxDULvYvH2ESBDq3kp3aGw87CshFePWwdc8Sg4wGohZrwo2CvXNKzUvhEkNaGnTPMC1fP1bcEvd2k1zF",
+              "timestamp": 1792895965,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822085,
+              "details": {
+                "Source Type": "Vessel",
+                "Fish Species": "Yellowfin",
+                "Region": "Bình Định",
+                "Catch Date": "12/10/2026",
+                "Fishing Method": "Longline",
+                "Catch Area": "Pacific Ocean",
+                "Catch Weight (kg)": "1,600",
+                "HACCP Certified": "✓ Certified"
+              }
+            },
+            {
+              "stage": 2,
+              "stageName": "Inventory",
+              "txHash": "2Leogdo8ZPQSS11qokyCVELmczSjPsdYMZfhwEbCey6xw7wq4mzSkWptXCvy7wBoGyjANgTmgsPxgoujeVzqcKys",
+              "timestamp": 1792895966,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822091,
+              "details": {
+                "Inventory Received": "14/10/2026",
+                "Inventory Location": "Port Cold Storage"
+              }
+            },
+            {
+              "stage": 3,
+              "stageName": "Manufacturing",
+              "txHash": "4nQ2NbyGLoKEWgWAmYqo7eawGTsZkYPdXubr65Q8hP4jj3kjTwErKiddvJTQSLZkcZ3uAfBokq5ahLef2AJrEQrz",
+              "timestamp": 1792895967,
+              "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+              "blockNumber": 514822096,
+              "details": {
+                "Factory Name": "TORO-Seafood Processing 1",
+                "Production Date": "19/10/2026",
+                "Packaging Date": "21/10/2026",
+                "Input Weight (kg)": "1,550",
+                "Output Cans": "3,100",
+                "Wastage (kg)": "48"
+              }
+            }
+          ]
+        }
+      ],
+      "lotTraces": [
+        {
+          "stage": 4,
+          "stageName": "Warehouse",
+          "txHash": "4cUQtjci9SSiECzFZukygSyWnnxEJnqMZXzMqM8bNwhQSyXy3PFMZiXtuXY74P1HPgyXmzuBHhqQhKug9xj5nnws",
+          "timestamp": 1792895970,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514822109,
+          "details": {
+            "Warehouse Name": "TORO-Cold Storage 2",
+            "Storage Start": "23/10/2026",
+            "Storage End": "24/10/2026",
+            "Storage Temp (°C)": -2
+          }
+        },
+        {
+          "stage": 5,
+          "stageName": "Distribution",
+          "txHash": "39bDbyWt64ygiKu9VQGg9jyJ4NWUXA8yfnRacfPs6YS4cMcTbj9vT6uZSV6GDEeZhrdi3jqhZK7hbTVLBybMDZ6A",
+          "timestamp": 1792895972,
+          "recorder": "Eo2TdLWCT4beSXA7qjTZaUFYRNsrW5e37rGtqD38BHft",
+          "blockNumber": 514822116,
+          "details": {
+            "Shipment Code": "TORO-Shipping 2",
+            "Departure Date": "24/10/2026",
+            "Arrival Date": "25/10/2026"
+          }
+        }
+      ]
     }
   },
   "batches": {}
