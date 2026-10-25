@@ -1,7 +1,13 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Lazy-init: instantiating Resend at module scope throws during
+// `next build` (page-data collection) when RESEND_API_KEY isn't set yet.
+function getResend() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return null;
+  return new Resend(apiKey);
+}
 
 const RECIPIENTS = [
   "trongtrawork@gmail.com",
@@ -17,6 +23,14 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
+      );
+    }
+
+    const resend = getResend();
+    if (!resend) {
+      return NextResponse.json(
+        { error: "Email service is not configured" },
+        { status: 503 }
       );
     }
 
